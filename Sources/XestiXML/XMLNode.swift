@@ -101,8 +101,8 @@ extension XMLNode {
             let .text(value):
             value
 
-        default:
-            nil
+        case .elem:
+            _valueOfElement()
         }
     }
 
@@ -145,6 +145,25 @@ extension XMLNode {
 
         default:
             return false
+        }
+    }
+
+    // MARK: Private Instance Methods
+
+    private func _valueOfElement() -> String? {
+        children?.reduce(into: "") { result, node in
+            switch node {
+            case .elem:
+                if let value = node._valueOfElement() {
+                    result += value
+                }
+
+            case let .text(value):
+                result += value
+
+            default:
+                break
+            }
         }
     }
 }
