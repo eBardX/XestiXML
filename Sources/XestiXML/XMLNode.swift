@@ -1,9 +1,26 @@
-// © 2022–2024 John Gary Pusey (see LICENSE.md)
+// © 2022–2025 John Gary Pusey (see LICENSE.md)
 
-public enum XMLNode<E: XMLElement, A: XMLAttribute> {
-    case attr(A, String)
-    case elem(E, [Self])
-    case text(String)
+public struct XMLNode<E: XMLElement, A: XMLAttribute> {
+
+    // MARK: Public Initializers
+
+    public init(attribute: A,
+                value: String) {
+        self.content = .attr(attribute, value)
+    }
+
+    public init(element: E,
+                children: [Self]) {
+        self.content = .elem(element, children)
+    }
+
+    public init(text: String) {
+        self.content = .text(text)
+    }
+
+    // MARK: Internal Instance Properties
+
+    internal let content: Content
 }
 
 // MARK: -
@@ -13,7 +30,7 @@ extension XMLNode {
     // MARK: Public Instance Properties
 
     public var attribute: A? {
-        switch self {
+        switch content {
         case let .attr(attr, _):
             attr
 
@@ -23,7 +40,7 @@ extension XMLNode {
     }
 
     public var children: [Self]? {
-        switch self {
+        switch content {
         case let .elem(_, children):
             children
 
@@ -33,7 +50,7 @@ extension XMLNode {
     }
 
     public var element: E? {
-        switch self {
+        switch content {
         case let .elem(elem, _):
             elem
 
@@ -43,7 +60,7 @@ extension XMLNode {
     }
 
     public var isAttribute: Bool {
-        switch self {
+        switch content {
         case .attr:
             true
 
@@ -53,7 +70,7 @@ extension XMLNode {
     }
 
     public var isElement: Bool {
-        switch self {
+        switch content {
         case .elem:
             true
 
@@ -63,7 +80,7 @@ extension XMLNode {
     }
 
     public var isText: Bool {
-        switch self {
+        switch content {
         case .text:
             true
 
@@ -73,7 +90,7 @@ extension XMLNode {
     }
 
     public var name: String? {
-        switch self {
+        switch content {
         case let .attr(attr, _):
             attr.name
 
@@ -86,7 +103,7 @@ extension XMLNode {
     }
 
     public var uri: String? {
-        switch self {
+        switch content {
         case let .elem(elem, _):
             elem.uri
 
@@ -96,7 +113,7 @@ extension XMLNode {
     }
 
     public var value: String? {
-        switch self {
+        switch content {
         case let .attr(_, value),
             let .text(value):
             value
@@ -129,7 +146,7 @@ extension XMLNode {
     }
 
     public func isAttribute(_ attr: A) -> Bool {
-        switch self {
+        switch content {
         case let .attr(candAttr, _):
             return candAttr == attr
 
@@ -139,7 +156,7 @@ extension XMLNode {
     }
 
     public func isElement(_ elem: E) -> Bool {
-        switch self {
+        switch content {
         case let .elem(candElem, _):
             return candElem == elem
 
@@ -152,7 +169,7 @@ extension XMLNode {
 
     private func _valueOfElement() -> String? {
         children?.reduce(into: "") { result, node in
-            switch node {
+            switch node.content {
             case .elem:
                 if let value = node._valueOfElement() {
                     result += value
@@ -172,7 +189,7 @@ extension XMLNode {
 
 extension XMLNode: CustomStringConvertible {
     public var description: String {
-        switch self {
+        switch content {
         case let .attr(attr, value):
             "\(attr.name)=\"\(value)\""
 

@@ -1,4 +1,4 @@
-// © 2022–2024 John Gary Pusey (see LICENSE.md)
+// © 2022–2025 John Gary Pusey (see LICENSE.md)
 
 import Foundation
 import XestiTools
@@ -62,7 +62,8 @@ public final class XMLParser<E: XMLElement, A: XMLAttribute>: NSObject, XMLParse
 
         _flushText()
 
-        let element: ParsedXMLNode = .elem(elem, pendingChildren)
+        let element: ParsedXMLNode = XMLNode(element: elem,
+                                             children: pendingChildren)
 
         if let context = savedContexts.popLast() {
             (pendingElement, pendingChildren) = context
@@ -84,7 +85,7 @@ public final class XMLParser<E: XMLElement, A: XMLAttribute>: NSObject, XMLParse
         guard !text.isEmpty
         else { return }
 
-        pendingChildren.append(.text(text))
+        pendingChildren.append(XMLNode(text: text))
     }
 
     private func _startElement(_ name: String,
@@ -102,7 +103,8 @@ public final class XMLParser<E: XMLElement, A: XMLAttribute>: NSObject, XMLParse
 
             for (name, value) in attributes {
                 if let attr = A(name) {
-                    pendingChildren.append(.attr(attr, value))
+                    pendingChildren.append(XMLNode(attribute: attr,
+                                                   value: value))
                 } else {
                     unrecognizedAttribute = name
 

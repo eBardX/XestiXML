@@ -1,4 +1,4 @@
-// © 2022–2024 John Gary Pusey (see LICENSE.md)
+// © 2022–2025 John Gary Pusey (see LICENSE.md)
 
 extension String {
     //
@@ -24,6 +24,10 @@ extension String {
 
                 whitespace = true
             }
+        }
+
+        if whitespace {
+            outChars = outChars.dropLast()
         }
 
         return String(outChars)
