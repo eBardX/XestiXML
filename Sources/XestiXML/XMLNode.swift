@@ -129,26 +129,50 @@ extension XMLNode {
         children?.filter { $0.isAttribute } ?? []
     }
 
+    public func allAttributes(_ attr: A) -> [Self] {
+        allAttributes([attr])
+    }
+
+    public func allAttributes(_ attrs: [A]) -> [Self] {
+        children?.filter { $0.isAttribute(attrs) } ?? []
+    }
+
     public func allChildElements() -> [Self] {
         children?.filter { $0.isElement } ?? []
     }
 
     public func allChildElements(_ elem: E) -> [Self] {
-        children?.filter { $0.isElement(elem) } ?? []
+        allChildElements([elem])
+    }
+
+    public func allChildElements(_ elems: [E]) -> [Self] {
+        children?.filter { $0.isElement(elems) } ?? []
     }
 
     public func firstAttribute(_ attr: A) -> Self? {
-        children?.first { $0.isAttribute(attr) }
+        firstAttribute([attr])
+    }
+
+    public func firstAttribute(_ attrs: [A]) -> Self? {
+        children?.first { $0.isAttribute(attrs) }
     }
 
     public func firstChildElement(_ elem: E) -> Self? {
-        children?.first { $0.isElement(elem) }
+        firstChildElement([elem])
+    }
+
+    public func firstChildElement(_ elems: [E]) -> Self? {
+        children?.first { $0.isElement(elems) }
     }
 
     public func isAttribute(_ attr: A) -> Bool {
+        isAttribute([attr])
+    }
+
+    public func isAttribute(_ attrs: [A]) -> Bool {
         switch content {
         case let .attr(candAttr, _):
-            return candAttr == attr
+            return attrs.contains(candAttr)
 
         default:
             return false
@@ -156,9 +180,13 @@ extension XMLNode {
     }
 
     public func isElement(_ elem: E) -> Bool {
+        isElement([elem])
+    }
+
+    public func isElement(_ elems: [E]) -> Bool {
         switch content {
         case let .elem(candElem, _):
-            return candElem == elem
+            return elems.contains(candElem)
 
         default:
             return false

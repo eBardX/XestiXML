@@ -4,12 +4,6 @@
 
 import PackageDescription
 
-let swiftSettings: [SwiftSetting] = [.enableUpcomingFeature("BareSlashRegexLiterals"),
-                                     .enableUpcomingFeature("ConciseMagicFile"),
-                                     .enableUpcomingFeature("ExistentialAny"),
-                                     .enableUpcomingFeature("ForwardTrailingClosures"),
-                                     .enableUpcomingFeature("ImplicitOpenExistentials")]
-
 let package = Package(name: "XestiXML",
                       platforms: [.iOS(.v16),
                                   .macOS(.v14)],
@@ -19,6 +13,19 @@ let package = Package(name: "XestiXML",
                                               from: "4.0.0")],
                       targets: [.target(name: "XestiXML",
                                         dependencies: [.product(name: "XestiTools",
-                                                                package: "XestiTools")],
-                                        swiftSettings: swiftSettings)],
-                      swiftLanguageVersions: [.version("5")])
+                                                                package: "XestiTools")])],
+                      swiftLanguageVersions: [.v5])
+
+let swiftSettings: [SwiftSetting] = [.enableUpcomingFeature("BareSlashRegexLiterals"),
+                                     .enableUpcomingFeature("ConciseMagicFile"),
+                                     .enableUpcomingFeature("ExistentialAny"),
+                                     .enableUpcomingFeature("ForwardTrailingClosures"),
+                                     .enableUpcomingFeature("ImplicitOpenExistentials")]
+
+for target in package.targets {
+    var settings = target.swiftSettings ?? []
+
+    settings.append(contentsOf: swiftSettings)
+
+    target.swiftSettings = settings
+}
