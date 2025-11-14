@@ -13,6 +13,14 @@ extension XMLNode {
         else { throw XMLError.unexpectedElement(element.require().name, elems.map { $0.name }) }
     }
 
+    public func hasChildElement(_ elem: E) -> Bool {
+        hasChildElement([elem])
+    }
+
+    public func hasChildElement(_ elems: [E]) -> Bool {
+        firstChildElement(elems) != nil
+    }
+
     public func optionalChildElement<T>(_ elem: E,
                                         _ transform: (XMLNode<E, A>) throws -> T) throws -> T? {
         try optionalChildElement([elem], transform)
