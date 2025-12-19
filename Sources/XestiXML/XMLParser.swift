@@ -93,7 +93,8 @@ public final class XMLParser<E: XMLElement, A: XMLAttribute>: NSObject, XMLParse
                                _ attributes: [String: String]) {
         _flushText()
 
-        if let elem = E(name, uri) {
+        if let elem = E(name: name,
+                        uri: uri) {
             if let pendElem = pendingElement {
                 savedContexts.append((pendElem, pendingChildren))
             }
@@ -102,7 +103,7 @@ public final class XMLParser<E: XMLElement, A: XMLAttribute>: NSObject, XMLParse
             pendingElement = elem
 
             for (name, value) in attributes {
-                if let attr = A(name) {
+                if let attr = A(name: name) {
                     pendingChildren.append(XMLNode(attribute: attr,
                                                    value: value))
                 } else {
