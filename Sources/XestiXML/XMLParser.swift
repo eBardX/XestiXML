@@ -3,7 +3,8 @@
 import Foundation
 import XestiTools
 
-public final class XMLParser<E: XMLElement, A: XMLAttribute>: NSObject, XMLParserDelegate {
+public final class XMLParser<E: XMLElement,
+                             A: XMLAttribute>: NSObject, XMLParserDelegate {
 
     // MARK: Public Nested Types
 

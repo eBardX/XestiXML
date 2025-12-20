@@ -1,6 +1,7 @@
 // © 2022–2025 John Gary Pusey (see LICENSE.md)
 
-public struct XMLNode<E: XMLElement, A: XMLAttribute> {
+public struct XMLNode<E: XMLElement,
+                      A: XMLAttribute> {
 
     // MARK: Public Initializers
 
@@ -232,4 +233,9 @@ extension XMLNode: CustomStringConvertible {
             "\"\(value)\""
         }
     }
+}
+
+// MARK: - Sendable
+
+extension XMLNode: Sendable {
 }

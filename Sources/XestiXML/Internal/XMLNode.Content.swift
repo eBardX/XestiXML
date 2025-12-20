@@ -7,3 +7,8 @@ extension XMLNode {
         case text(String)
     }
 }
+
+// MARK: - Sendable
+
+extension XMLNode.Content: Sendable {
+}

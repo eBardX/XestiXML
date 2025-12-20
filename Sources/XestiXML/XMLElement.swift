@@ -1,8 +1,8 @@
-// © 2024 John Gary Pusey (see LICENSE.md)
+// © 2024–2025 John Gary Pusey (see LICENSE.md)
 
 import XestiTools
 
-public protocol XMLElement: Equatable {
+public protocol XMLElement: Equatable, Sendable {
     init?(name: String,
           uri: String)
 

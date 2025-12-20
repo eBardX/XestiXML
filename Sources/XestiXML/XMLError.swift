@@ -1,4 +1,4 @@
-// © 2022–2024 John Gary Pusey (see LICENSE.md)
+// © 2022–2025 John Gary Pusey (see LICENSE.md)
 
 import XestiTools
 
@@ -110,4 +110,9 @@ extension XMLError: EnhancedError {
             return fmtItems.dropLast().joined(separator: separator) + separatorN + fmtItems[fmtItems.count - 1]
         }
     }
+}
+
+// MARK: - Sendable
+
+extension XMLError: Sendable {
 }
