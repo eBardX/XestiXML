@@ -1,4 +1,4 @@
-// © 2022–2025 John Gary Pusey (see LICENSE.md)
+// © 2022–2026 John Gary Pusey (see LICENSE.md)
 
 import XestiTools
 
@@ -59,7 +59,7 @@ extension XMLError: EnhancedError {
             "Unrecognized attribute name: \(name), line: \(line), column: \(column)"
 
         case let .unrecognizedElement(name, uri, line, column):
-            if let uri, !uri.isEmpty {
+            if let uri {
                 "Unrecognized element name: \(name), uri: \(uri), line: \(line), column: \(column)"
             } else {
                 "Unrecognized element name: \(name), line: \(line), column: \(column)"

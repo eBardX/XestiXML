@@ -1,4 +1,4 @@
-// © 2022–2025 John Gary Pusey (see LICENSE.md)
+// © 2022–2026 John Gary Pusey (see LICENSE.md)
 
 extension String {
     //
@@ -7,7 +7,7 @@ extension String {
     // characters by single space. If only whitespace exists, return empty
     // string.
     //
-    public func normalizedXMLWhitespace() -> String {
+    internal func normalizedXMLWhitespace() -> String {
         guard !isEmpty
         else { return "" }
 

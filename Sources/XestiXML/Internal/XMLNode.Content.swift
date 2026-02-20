@@ -1,9 +1,8 @@
-// © 2025 John Gary Pusey (see LICENSE.md)
+// © 2025–2026 John Gary Pusey (see LICENSE.md)
 
 extension XMLNode {
     internal enum Content {
-        case attr(A, String)
-        case elem(E, [XMLNode])
+        case elem(E, [A: String], [XMLNode])
         case text(String)
     }
 }

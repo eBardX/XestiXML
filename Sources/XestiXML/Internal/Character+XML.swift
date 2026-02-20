@@ -1,4 +1,4 @@
-// © 2022–2024 John Gary Pusey (see LICENSE.md)
+// © 2022–2026 John Gary Pusey (see LICENSE.md)
 
 extension Character {
     //
@@ -6,7 +6,7 @@ extension Character {
     // more space (#x20), carriage return (#xD), line feed (#xA), or tab (#x9)
     // characters.
     //
-    public var isXMLWhitespace: Bool {
+    internal var isXMLWhitespace: Bool {
         switch self {
         case "\n", "\r", "\t", " ":
             true

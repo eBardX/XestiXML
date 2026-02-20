@@ -1,11 +1,11 @@
-// © 2024–2025 John Gary Pusey (see LICENSE.md)
+// © 2024–2026 John Gary Pusey (see LICENSE.md)
 
 import XestiTools
 
 public protocol XMLAttribute: Equatable, Hashable, Sendable {
-    init?(name: String)
-
     init(_ name: String)
+
+    init?(name: String)
 
     var name: String { get }
 }
@@ -17,12 +17,12 @@ extension XMLAttribute where Self: RawRepresentable,
 
     // MARK: Public Initializers
 
-    public init?(name: String) {
-        self.init(rawValue: name)
-    }
-
     public init(_ name: String) {
         self.init(rawValue: name)!  // swiftlint:disable:this force_unwrapping
+    }
+
+    public init?(name: String) {
+        self.init(rawValue: name)
     }
 
     // MARK: Public Instance Properties
@@ -38,12 +38,12 @@ extension XMLAttribute where Self: StringRepresentable {
 
     // MARK: Public Initializers
 
-    public init?(name: String) {
-        self.init(stringValue: name)
-    }
-
     public init(_ name: String) {
         self.init(name)
+    }
+
+    public init?(name: String) {
+        self.init(stringValue: name)
     }
 
     // MARK: Public Instance Properties

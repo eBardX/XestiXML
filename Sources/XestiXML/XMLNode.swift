@@ -1,18 +1,13 @@
-// © 2022–2025 John Gary Pusey (see LICENSE.md)
+// © 2022–2026 John Gary Pusey (see LICENSE.md)
 
-public struct XMLNode<E: XMLElement,
-                      A: XMLAttribute> {
+public struct XMLNode<E: XMLElement, A: XMLAttribute> {
 
     // MARK: Public Initializers
 
-    public init(attribute: A,
-                value: String) {
-        self.content = .attr(attribute, value)
-    }
-
     public init(element: E,
+                attributes: [A: String],
                 children: [Self]) {
-        self.content = .elem(element, children)
+        self.content = .elem(element, attributes, children)
     }
 
     public init(text: String) {
@@ -30,10 +25,10 @@ extension XMLNode {
 
     // MARK: Public Instance Properties
 
-    public var attribute: A? {
+    public var attributes: [A: String]? {
         switch content {
-        case let .attr(attr, _):
-            attr
+        case let .elem(_, attrs, _):
+            attrs
 
         default:
             nil
@@ -42,8 +37,8 @@ extension XMLNode {
 
     public var children: [Self]? {
         switch content {
-        case let .elem(_, children):
-            children
+        case let .elem(_, _, kids):
+            kids
 
         default:
             nil
@@ -52,21 +47,11 @@ extension XMLNode {
 
     public var element: E? {
         switch content {
-        case let .elem(elem, _):
+        case let .elem(elem, _, _):
             elem
 
         default:
             nil
-        }
-    }
-
-    public var isAttribute: Bool {
-        switch content {
-        case .attr:
-            true
-
-        default:
-            false
         }
     }
 
@@ -92,10 +77,7 @@ extension XMLNode {
 
     public var name: String? {
         switch content {
-        case let .attr(attr, _):
-            attr.name
-
-        case let .elem(elem, _):
+        case let .elem(elem, _, _):
             elem.name
 
         default:
@@ -105,7 +87,7 @@ extension XMLNode {
 
     public var uri: String? {
         switch content {
-        case let .elem(elem, _):
+        case let .elem(elem, _, _):
             elem.uri
 
         default:
@@ -115,28 +97,15 @@ extension XMLNode {
 
     public var value: String? {
         switch content {
-        case let .attr(_, value),
-            let .text(value):
-            value
-
         case .elem:
             _valueOfElement()
+
+        case let .text(value):
+            value
         }
     }
 
     // MARK: Public Instance Methods
-
-    public func allAttributes() -> [Self] {
-        children?.filter { $0.isAttribute } ?? []
-    }
-
-    public func allAttributes(_ attr: A) -> [Self] {
-        allAttributes([attr])
-    }
-
-    public func allAttributes(_ attrs: [A]) -> [Self] {
-        children?.filter { $0.isAttribute(attrs) } ?? []
-    }
 
     public func allChildElements() -> [Self] {
         children?.filter { $0.isElement } ?? []
@@ -150,14 +119,6 @@ extension XMLNode {
         children?.filter { $0.isElement(elems) } ?? []
     }
 
-    public func firstAttribute(_ attr: A) -> Self? {
-        firstAttribute([attr])
-    }
-
-    public func firstAttribute(_ attrs: [A]) -> Self? {
-        children?.first { $0.isAttribute(attrs) }
-    }
-
     public func firstChildElement(_ elem: E) -> Self? {
         firstChildElement([elem])
     }
@@ -166,27 +127,13 @@ extension XMLNode {
         children?.first { $0.isElement(elems) }
     }
 
-    public func isAttribute(_ attr: A) -> Bool {
-        isAttribute([attr])
-    }
-
-    public func isAttribute(_ attrs: [A]) -> Bool {
-        switch content {
-        case let .attr(candAttr, _):
-            return attrs.contains(candAttr)
-
-        default:
-            return false
-        }
-    }
-
     public func isElement(_ elem: E) -> Bool {
         isElement([elem])
     }
 
     public func isElement(_ elems: [E]) -> Bool {
         switch content {
-        case let .elem(candElem, _):
+        case let .elem(candElem, _, _):
             return elems.contains(candElem)
 
         default:
@@ -206,9 +153,6 @@ extension XMLNode {
 
             case let .text(value):
                 result += value
-
-            default:
-                break
             }
         }
     }
@@ -219,18 +163,23 @@ extension XMLNode {
 extension XMLNode: CustomStringConvertible {
     public var description: String {
         switch content {
-        case let .attr(attr, value):
-            "\(attr.name)=\"\(value)\""
+        case let .elem(elem, attrs, kids):
+            var result = "<\(elem.name)"
 
-        case let .elem(elem, children):
-            if children.isEmpty {
-                "<\(elem.name)>"
-            } else {
-                "<\(elem.name)>\(children)"
+            for (attr, val) in attrs {
+                result += " \(attr.name)=\"\(val)\""
             }
 
+            result += ">"
+
+            if !kids.isEmpty {
+                result += "\(kids)"
+            }
+
+            return result
+
         case let .text(value):
-            "\"\(value)\""
+            return "\"\(value)\""
         }
     }
 }

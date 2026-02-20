@@ -1,4 +1,4 @@
-// © 2022–2025 John Gary Pusey (see LICENSE.md)
+// © 2022–2026 John Gary Pusey (see LICENSE.md)
 
 extension XMLNode {
 
@@ -78,28 +78,11 @@ extension XMLNode {
     }
 
     public func unexpectedRootElement() throws {
-       throw XMLError.unexpectedRootElement(element.require().name)
+        throw XMLError.unexpectedRootElement(element.require().name)
     }
 
     public func unsupportedRootElement() throws {
-       throw XMLError.unsupportedRootElement(element.require().name)
-    }
-
-    public func valueOfExpectedElement<T>(_ elem: E,
-                                          _ validate: (String) -> T? = { $0 }) throws -> T {
-        try valueOfExpectedElement([elem], validate)
-    }
-
-    public func valueOfExpectedElement<T>(_ elems: [E],
-                                          _ validate: (String) -> T? = { $0 }) throws -> T {
-        try expectElement(elems)
-
-        let (value, strValue, isValid) = _valueOfNode(validate)
-
-        guard isValid, let value
-        else { throw XMLError.invalidElementValue(elems.map { $0.name }, strValue) }
-
-        return value
+        throw XMLError.unsupportedRootElement(element.require().name)
     }
 
     public func valueOfOptionalAttribute<T>(_ attr: A,
@@ -109,10 +92,11 @@ extension XMLNode {
 
     public func valueOfOptionalAttribute<T>(_ attrs: [A],
                                             _ validate: (String) -> T? = { $0 }) throws -> T? {
-        guard let node = firstAttribute(attrs)
+        guard let attributes,
+              let attrValue = _firstAttribute(attrs, attributes)
         else { return nil }
 
-        let (value, strValue, isValid) = node._valueOfNode(validate)
+        let (value, strValue, isValid) = _validateValue(attrValue, validate)
 
         guard isValid, let value
         else { throw XMLError.invalidAttributeValue(attrs.map { $0.name }, strValue) }
@@ -130,7 +114,7 @@ extension XMLNode {
         guard let node = firstChildElement(elems)
         else { return nil }
 
-        let (value, strValue, isValid) = node._valueOfNode(validate)
+        let (value, strValue, isValid) = _validateValue(node.value, validate)
 
         guard isValid, let value
         else { throw XMLError.invalidElementValue(elems.map { $0.name }, strValue) }
@@ -145,10 +129,11 @@ extension XMLNode {
 
     public func valueOfRequiredAttribute<T>(_ attrs: [A],
                                             _ validate: (String) -> T? = { $0 }) throws -> T {
-        guard let node = firstAttribute(attrs)
+        guard let attributes,
+              let attrValue = _firstAttribute(attrs, attributes)
         else { throw XMLError.missingRequiredAttribute(element.require().name, attrs.map { $0.name }) }
 
-        let (value, strValue, isValid) = node._valueOfNode(validate)
+        let (value, strValue, isValid) = _validateValue(attrValue, validate)
 
         guard isValid, let value
         else { throw XMLError.invalidAttributeValue(attrs.map { $0.name }, strValue) }
@@ -166,22 +151,34 @@ extension XMLNode {
         guard let node = firstChildElement(elems)
         else { throw XMLError.missingRequiredChildElement(element.require().name, elems.map { $0.name }) }
 
-        let (value, strValue, isValid) = node._valueOfNode(validate)
+        let (value, strValue, isValid) = _validateValue(node.value, validate)
 
         guard isValid, let value
         else { throw XMLError.invalidElementValue(elems.map { $0.name }, strValue) }
 
         return value
     }
+}
 
-    // MARK: Private Instance Methods
+// MARK: Private Functions
 
-    private func _valueOfNode<T>(_ validate: (String) -> T?) -> (T?, String, Bool) {
-        let strValue = value?.normalizedXMLWhitespace() ?? ""
-
-        guard let value = validate(strValue)
-        else { return (nil, strValue, false) }
-
-        return (value, strValue, true)
+private func _firstAttribute<A: XMLAttribute>(_ attrs: [A],
+                                              _ attributes: [A: String]) -> String? {
+    for attr in attrs {
+        if let value = attributes[attr] {
+            return value
+        }
     }
+
+    return nil
+}
+
+private func _validateValue<T>(_ value: String?,
+                               _ validate: (String) -> T?) -> (T?, String, Bool) {
+    let strValue = value?.normalizedXMLWhitespace() ?? ""
+
+    guard let value = validate(strValue)
+    else { return (nil, strValue, false) }
+
+    return (value, strValue, true)
 }
