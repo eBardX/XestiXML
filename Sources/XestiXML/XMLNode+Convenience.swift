@@ -4,28 +4,77 @@ extension XMLNode {
 
     // MARK: Public Instance Methods
 
+    /// Checks that this instance is an element node matching the given
+    /// ``XMLElement`` instance.
+    ///
+    /// - Parameter elem:   An ``XMLElement`` instance to match against.
     public func expectElement(_ elem: E) throws {
         try expectElement([elem])
     }
 
+    /// Checks that this instance is an element node matching any of the given
+    /// ``XMLElement`` instances.
+    ///
+    /// - Parameter elems:  An array of ``XMLElement`` instances to match
+    ///                     against.
     public func expectElement(_ elems: [E]) throws {
         guard isElement(elems)
         else { throw XMLError.unexpectedElement(element.require().name, elems.map { $0.name }) }
     }
 
+    /// Returns a Boolean value indicating whether there is a child element node
+    /// of this instance matching the given ``XMLElement`` instance.
+    ///
+    /// - Parameter elem:   An ``XMLElement`` instance to match against.
+    ///
+    /// - Returns:  `true` if there is a matching child element node. If this
+    ///             instance is not an element node, or if there are no matches,
+    ///             this method returns `false`.
     public func hasChildElement(_ elem: E) -> Bool {
         hasChildElement([elem])
     }
 
+    /// Returns a Boolean value indicating whether there is a child element node
+    /// of this instance matching any of the given ``XMLElement`` instances.
+    ///
+    /// - Parameter elems:  An array of ``XMLElement`` instances to match
+    ///                     against.
+    ///
+    /// - Returns:  `true` if there is a matching child element node. If this
+    ///             instance is not an element node, or if there are no matches,
+    ///             this method returns `false`.
     public func hasChildElement(_ elems: [E]) -> Bool {
         firstChildElement(elems) != nil
     }
 
+    /// Returns the first transformed child element node of this instance
+    /// matching the given ``XMLElement`` instance.
+    ///
+    /// - Parameter elem:       An ``XMLElement`` instance to match against.
+    /// - Parameter transform:  A mapping closure. `transform` accepts a node as
+    ///                         its parameter and returns a transformed value of
+    ///                         the same or of a different type.
+    ///
+    /// - Returns:  The first matching child element node as transformed by
+    ///             `transform`. If this instance is not an element node, or if
+    ///             there are no matches, this method returns `nil`.
     public func optionalChildElement<T>(_ elem: E,
                                         _ transform: (XMLNode<E, A>) throws -> T) throws -> T? {
         try optionalChildElement([elem], transform)
     }
 
+    /// Returns the first transformed child element node of this instance
+    /// matching any of the given ``XMLElement`` instances.
+    ///
+    /// - Parameter elems:      An array of ``XMLElement`` instances to match
+    ///                         against.
+    /// - Parameter transform:  A mapping closure. `transform` accepts a node as
+    ///                         its parameter and returns a transformed value of
+    ///                         the same or of a different type.
+    ///
+    /// - Returns:  The first matching child element node as transformed by
+    ///             `transform`. If this instance is not an element node, or if
+    ///             there are no matches, this method returns `nil`.
     public func optionalChildElement<T>(_ elems: [E],
                                         _ transform: (XMLNode<E, A>) throws -> T) throws -> T? {
         guard let node = firstChildElement(elems)
@@ -34,11 +83,34 @@ extension XMLNode {
         return try transform(node)
     }
 
+    /// Returns an array of all transformed child element nodes of this instance
+    /// matching the given ``XMLElement`` instance.
+    ///
+    /// - Parameter elem:       An ``XMLElement`` instance to match against.
+    /// - Parameter transform:  A mapping closure. `transform` accepts a node as
+    ///                         its parameter and returns a transformed value of
+    ///                         the same or of a different type.
+    ///
+    /// - Returns:  An array of all matching child element nodes as transformed
+    ///             by `transform`. If this instance is not an element node, or
+    ///             if there are no matches, this method returns an empty array.
     public func optionalChildElements<T>(_ elem: E,
                                          _ transform: (XMLNode<E, A>) throws -> T) throws -> [T] {
         try optionalChildElements([elem], transform)
     }
 
+    /// Returns an array of all transformed child element nodes of this instance
+    /// matching any of the given ``XMLElement`` instances.
+    ///
+    /// - Parameter elems:      An array of ``XMLElement`` instances to match
+    ///                         against.
+    /// - Parameter transform:  A mapping closure. `transform` accepts a node as
+    ///                         its parameter and returns a transformed value of
+    ///                         the same or of a different type.
+    ///
+    /// - Returns:  An array of all matching child element nodes as transformed
+    ///             by `transform`. If this instance is not an element node, or
+    ///             if there are no matches, this method returns an empty array.
     public func optionalChildElements<T>(_ elems: [E],
                                          _ transform: (XMLNode<E, A>) throws -> T) throws -> [T] {
         let nodes = allChildElements(elems)
@@ -49,11 +121,34 @@ extension XMLNode {
         return try nodes.map { try transform($0) }
     }
 
+    /// Returns the first transformed child element node of this instance
+    /// matching the given ``XMLElement`` instance.
+    ///
+    /// - Parameter elem:       An ``XMLElement`` instance to match against.
+    /// - Parameter transform:  A mapping closure. `transform` accepts a node as
+    ///                         its parameter and returns a transformed value of
+    ///                         the same or of a different type.
+    ///
+    /// - Returns:  The first matching child element node as transformed by
+    ///             `transform`. If this instance is not an element node, or if
+    ///             there are no matches, this method throws an error.
     public func requiredChildElement<T>(_ elem: E,
                                         _ transform: (XMLNode<E, A>) throws -> T) throws -> T {
         try requiredChildElement([elem], transform)
     }
 
+    /// Returns the first transformed child element node of this instance
+    /// matching any of the given ``XMLElement`` instances.
+    ///
+    /// - Parameter elems:      An array of ``XMLElement`` instances to match
+    ///                         against.
+    /// - Parameter transform:  A mapping closure. `transform` accepts a node as
+    ///                         its parameter and returns a transformed value of
+    ///                         the same or of a different type.
+    ///
+    /// - Returns:  The first matching child element node as transformed by
+    ///             `transform`. If this instance is not an element node, or if
+    ///             there are no matches, this method throws an error.
     public func requiredChildElement<T>(_ elems: [E],
                                         _ transform: (XMLNode<E, A>) throws -> T) throws -> T {
         guard let node = firstChildElement(elems)
@@ -62,11 +157,34 @@ extension XMLNode {
         return try transform(node)
     }
 
+    /// Returns an array of all transformed child element nodes of this instance
+    /// matching the given ``XMLElement`` instance.
+    ///
+    /// - Parameter elem:       An ``XMLElement`` instance to match against.
+    /// - Parameter transform:  A mapping closure. `transform` accepts a node as
+    ///                         its parameter and returns a transformed value of
+    ///                         the same or of a different type.
+    ///
+    /// - Returns:  An array of all matching child element nodes as transformed
+    ///             by `transform`. If this instance is not an element node, or
+    ///             if there are no matches, this method throws an error.
     public func requiredChildElements<T>(_ elem: E,
                                          _ transform: (XMLNode<E, A>) throws -> T) throws -> [T] {
         try requiredChildElements([elem], transform)
     }
 
+    /// Returns an array of all transformed child element nodes of this instance
+    /// matching any of the given ``XMLElement`` instances.
+    ///
+    /// - Parameter elems:      An array of ``XMLElement`` instances to match
+    ///                         against.
+    /// - Parameter transform:  A mapping closure. `transform` accepts a node as
+    ///                         its parameter and returns a transformed value of
+    ///                         the same or of a different type.
+    ///
+    /// - Returns:  An array of all matching child element nodes as transformed
+    ///             by `transform`. If this instance is not an element node, or
+    ///             if there are no matches, this method throws an error.
     public func requiredChildElements<T>(_ elems: [E],
                                          _ transform: (XMLNode<E, A>) throws -> T) throws -> [T] {
         let nodes = allChildElements(elems)
@@ -77,19 +195,56 @@ extension XMLNode {
         return try nodes.map { try transform($0) }
     }
 
+    /// Convenience method that complains that this instance is an unexpected
+    /// root element.
     public func unexpectedRootElement() throws {
         throw XMLError.unexpectedRootElement(element.require().name)
     }
 
+    /// Convenience method that complains that this instance is an unsupported
+    /// root element.
     public func unsupportedRootElement() throws {
         throw XMLError.unsupportedRootElement(element.require().name)
     }
 
+    /// Returns the transformed value of the first attribute node of this
+    /// instance matching the given ``XMLAttribute`` instance.
+    ///
+    /// - Parameter attr:       An ``XMLAttribute`` instance to match against.
+    /// - Parameter validate:   A validation closure. `validate` accepts a
+    ///                         string value as its parameter and optionally
+    ///                         returns a transformed value of the same or of a
+    ///                         different type. If `validate` returns `nil`, the
+    ///                         string value is considered to be invalid. By
+    ///                         default, returns the value untransformed.
+    ///
+    /// - Returns:  The value of the first matching attribute node as
+    ///             transformed by `validate`. If this instance is not an
+    ///             element node, or if there are no matches, or if the
+    ///             attribute value is invalid according to validation closure,
+    ///             this method returns `nil`.
     public func valueOfOptionalAttribute<T>(_ attr: A,
                                             _ validate: (String) -> T? = { $0 }) throws -> T? {
         try valueOfOptionalAttribute([attr], validate)
     }
 
+    /// Returns the transformed value of the first attribute node of this
+    /// instance matching any of the given ``XMLAttribute`` instances.
+    ///
+    /// - Parameter attrs:      An array of ``XMLAttribute`` instances to match
+    ///                         against.
+    /// - Parameter validate:   A validation closure. `validate` accepts a
+    ///                         string value as its parameter and optionally
+    ///                         returns a transformed value of the same or of a
+    ///                         different type. If `validate` returns `nil`, the
+    ///                         string value is considered to be invalid. By
+    ///                         default, returns the value untransformed.
+    ///
+    /// - Returns:  The value of the first matching attribute node as
+    ///             transformed by `validate`. If this instance is not an
+    ///             element node, or if there are no matches, or if the
+    ///             attribute value is invalid according to validation closure,
+    ///             this method returns `nil`.
     public func valueOfOptionalAttribute<T>(_ attrs: [A],
                                             _ validate: (String) -> T? = { $0 }) throws -> T? {
         guard let attributes,
@@ -104,11 +259,44 @@ extension XMLNode {
         return value
     }
 
+    /// Returns the transformed ``value`` of the first child element node of
+    /// this instance matching the given ``XMLElement`` instance.
+    ///
+    /// - Parameter elem:       An ``XMLElement`` instance to match against.
+    /// - Parameter validate:   A validation closure. `validate` accepts a
+    ///                         string value as its parameter and optionally
+    ///                         returns a transformed value of the same or of a
+    ///                         different type. If `validate` returns `nil`, the
+    ///                         string value is considered to be invalid. By
+    ///                         default, returns the value untransformed.
+    ///
+    /// - Returns:  The ``value`` of the first matching child element node as
+    ///             transformed by `validate`. If this instance is not an
+    ///             element node, or if there are no matches, or if the value is
+    ///             invalid according to validation closure, this method returns
+    ///             `nil`.
     public func valueOfOptionalChildElement<T>(_ elem: E,
                                                _ validate: (String) -> T? = { $0 }) throws -> T? {
         try valueOfOptionalChildElement([elem], validate)
     }
 
+    /// Returns the transformed ``value`` of the first child element node of
+    /// this instance matching any of the given ``XMLElement`` instances.
+    ///
+    /// - Parameter elems:      An array of ``XMLElement`` instances to match
+    ///                         against.
+    /// - Parameter validate:   A validation closure. `validate` accepts a
+    ///                         string value as its parameter and optionally
+    ///                         returns a transformed value of the same or of a
+    ///                         different type. If `validate` returns `nil`, the
+    ///                         string value is considered to be invalid. By
+    ///                         default, returns the value untransformed.
+    ///
+    /// - Returns:  The ``value`` of the first matching child element node as
+    ///             transformed by `validate`. If this instance is not an
+    ///             element node, or if there are no matches, or if the value is
+    ///             invalid according to validation closure, this method returns
+    ///             `nil`.
     public func valueOfOptionalChildElement<T>(_ elems: [E],
                                                _ validate: (String) -> T? = { $0 }) throws -> T? {
         guard let node = firstChildElement(elems)
@@ -122,11 +310,44 @@ extension XMLNode {
         return value
     }
 
+    /// Returns the transformed value of the first attribute node of this
+    /// instance matching the given ``XMLAttribute`` instance.
+    ///
+    /// - Parameter attr:       An ``XMLAttribute`` instance to match against.
+    /// - Parameter validate:   A validation closure. `validate` accepts a
+    ///                         string value as its parameter and optionally
+    ///                         returns a transformed value of the same or of a
+    ///                         different type. If `validate` returns `nil`, the
+    ///                         string value is considered to be invalid. By
+    ///                         default, returns the value untransformed.
+    ///
+    /// - Returns:  The value of the first matching attribute node as
+    ///             transformed by `validate`. If this instance is not an
+    ///             element node, or if there are no matches, or if the
+    ///             attribute value is invalid according to validation closure,
+    ///             this method throws an error.
     public func valueOfRequiredAttribute<T>(_ attr: A,
                                             _ validate: (String) -> T? = { $0 }) throws -> T {
         try valueOfRequiredAttribute([attr], validate)
     }
 
+    /// Returns the transformed value of the first attribute node of this
+    /// instance matching any of the given ``XMLAttribute`` instances.
+    ///
+    /// - Parameter attrs:      An array of ``XMLAttribute`` instances to match
+    ///                         against.
+    /// - Parameter validate:   A validation closure. `validate` accepts a
+    ///                         string value as its parameter and optionally
+    ///                         returns a transformed value of the same or of a
+    ///                         different type. If `validate` returns `nil`, the
+    ///                         string value is considered to be invalid. By
+    ///                         default, returns the value untransformed.
+    ///
+    /// - Returns:  The value of the first matching attribute node as
+    ///             transformed by `validate`. If this instance is not an
+    ///             element node, or if there are no matches, or if the
+    ///             attribute value is invalid according to validation closure,
+    ///             this method throws an error.
     public func valueOfRequiredAttribute<T>(_ attrs: [A],
                                             _ validate: (String) -> T? = { $0 }) throws -> T {
         guard let attributes,
@@ -141,11 +362,44 @@ extension XMLNode {
         return value
     }
 
+    /// Returns the transformed ``value`` of the first child element node of
+    /// this instance matching the given ``XMLElement`` instance.
+    ///
+    /// - Parameter elem:       An ``XMLElement`` instance to match against.
+    /// - Parameter validate:   A validation closure. `validate` accepts a
+    ///                         string value as its parameter and optionally
+    ///                         returns a transformed value of the same or of a
+    ///                         different type. If `validate` returns `nil`, the
+    ///                         string value is considered to be invalid. By
+    ///                         default, returns the value untransformed.
+    ///
+    /// - Returns:  The ``value`` of the first matching child element node as
+    ///             transformed by `validate`. If this instance is not an
+    ///             element node, or if there are no matches, or if the value is
+    ///             invalid according to validation closure, this method throws
+    ///             an error.
     public func valueOfRequiredChildElement<T>(_ elem: E,
                                                _ validate: (String) -> T? = { $0 }) throws -> T {
         try valueOfRequiredChildElement([elem], validate)
     }
 
+    /// Returns the transformed ``value`` of the first child element node of
+    /// this instance matching any of the given ``XMLElement`` instances.
+    ///
+    /// - Parameter elems:      An array of ``XMLElement`` instances to match
+    ///                         against.
+    /// - Parameter validate:   A validation closure. `validate` accepts a
+    ///                         string value as its parameter and optionally
+    ///                         returns a transformed value of the same or of a
+    ///                         different type. If `validate` returns `nil`, the
+    ///                         string value is considered to be invalid. By
+    ///                         default, returns the value untransformed.
+    ///
+    /// - Returns:  The ``value`` of the first matching child element node as
+    ///             transformed by `validate`. If this instance is not an
+    ///             element node, or if there are no matches, or if the value is
+    ///             invalid according to validation closure, this method throws
+    ///             an error.
     public func valueOfRequiredChildElement<T>(_ elems: [E],
                                                _ validate: (String) -> T? = { $0 }) throws -> T {
         guard let node = firstChildElement(elems)

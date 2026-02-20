@@ -2,11 +2,24 @@
 
 import XestiTools
 
+/// A type-safe XML attribute.
 public protocol XMLAttribute: Equatable, Hashable, Sendable {
+    /// Creates a new XML attribute with the specified name.
+    ///
+    /// If the specified name is empty, this initializer stops program
+    /// execution.
+    ///
+    /// - Parameter name:   The name of the XML attribute.
     init(_ name: String)
 
+    /// Creates a new XML attribute with the specified name.
+    ///
+    /// If the specified name is empty, this initializer returns `nil`.
+    ///
+    /// - Parameter name:   The name of the XML attribute.
     init?(name: String)
 
+    /// The name of the XML attribute.
     var name: String { get }
 }
 

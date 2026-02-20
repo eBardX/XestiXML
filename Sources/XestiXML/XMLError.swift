@@ -2,17 +2,78 @@
 
 import XestiTools
 
+/// An error that occurs while parsing the XML document or while matching
+/// against the XML node tree.
 public enum XMLError {
+    /// Some otherwise unspecified failure has occurred while parsing the XML
+    /// document.
     case internalFailure
+
+    /// An invalid attribute value was encountered while matching against the
+    /// XML node tree.
+    ///
+    /// As associated values, this case contains a list of the names of
+    /// acceptable attributes, as well as the invalid attribute value.
     case invalidAttributeValue([String], String)
+
+    /// An invalid element value was encountered while matching against the XML
+    /// node tree.
+    ///
+    /// As associated values, this case contains a list of the names of
+    /// acceptable elements, as well as the invalid element value.
     case invalidElementValue([String], String)
+
+    /// An element in the XML node tree is missing a required attribute.
+    ///
+    /// As associated values, this case contains the name of the element, as
+    /// well as a list of the names of acceptable attributes.
     case missingRequiredAttribute(String, [String])
+
+    /// An element in the XML node tree is missing a required child element.
+    ///
+    /// As associated values, this case contains the name of the parent element,
+    /// as well as a list of the names of acceptable child elements.
     case missingRequiredChildElement(String, [String])
+
+    /// A failure was encountered by the underlying base XML parser while
+    /// parsing the XML document.
+    ///
+    /// As associated values, this case contains the parse error reported by the
+    /// underlying base XML parser, as well as the line and column in the XML
+    /// document.
     case parseFailure((any EnhancedError)?, Int, Int)
+
+    /// An unexpected element was encountered in the XML node tree.
+    ///
+    /// As associated values, this case contains the unexpected element name, as
+    /// well as a list of expected element names.
     case unexpectedElement(String, [String])
+
+    /// An unexpected root element was encountered in the XML node tree.
+    ///
+    /// As associated values, this case contains the unexpected root element
+    /// name.
     case unexpectedRootElement(String)
+
+    /// An unrecognized attribute name was encountered while parsing the XML
+    /// document.
+    ///
+    /// As associated values, this case contains the unrecognized attribute
+    /// name, as well as the line and column in the XML document.
     case unrecognizedAttribute(String, Int, Int)
+
+    /// An unrecognized element name or namespace URI was encountered while
+    /// parsing the XML document.
+    ///
+    /// As associated values, this case contains the unrecognized element name
+    /// and optional namespace URI, as well as the line and column in the XML
+    /// document.
     case unrecognizedElement(String, String?, Int, Int)
+
+    /// An unsupported root element was encountered in the XML node tree.
+    ///
+    /// As associated values, this case contains the unsupported root element
+    /// name.
     case unsupportedRootElement(String)
 }
 
