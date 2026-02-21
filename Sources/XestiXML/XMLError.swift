@@ -2,22 +2,22 @@
 
 import XestiTools
 
-/// An error that occurs while parsing the XML document or while matching
-/// against the XML node tree.
+/// An error that occurs while parsing the XML document or while matching the
+/// XML node tree.
 public enum XMLError {
     /// Some otherwise unspecified failure has occurred while parsing the XML
     /// document.
     case internalFailure
 
-    /// An invalid attribute value was encountered while matching against the
-    /// XML node tree.
+    /// An invalid attribute value was encountered while matching the XML node
+    /// tree.
     ///
     /// As associated values, this case contains a list of the names of
     /// acceptable attributes, as well as the invalid attribute value.
     case invalidAttributeValue([String], String)
 
-    /// An invalid element value was encountered while matching against the XML
-    /// node tree.
+    /// An invalid element value was encountered while matching the XML node
+    /// tree.
     ///
     /// As associated values, this case contains a list of the names of
     /// acceptable elements, as well as the invalid element value.

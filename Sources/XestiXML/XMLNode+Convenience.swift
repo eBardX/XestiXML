@@ -4,28 +4,27 @@ extension XMLNode {
 
     // MARK: Public Instance Methods
 
-    /// Checks that this instance is an element node matching the given
+    /// Checks that this instance is an element node matching the provided
     /// ``XMLElement`` instance.
     ///
-    /// - Parameter elem:   An ``XMLElement`` instance to match against.
+    /// - Parameter elem:   An ``XMLElement`` instance to match.
     public func expectElement(_ elem: E) throws {
         try expectElement([elem])
     }
 
-    /// Checks that this instance is an element node matching any of the given
+    /// Checks that this instance is an element node matching any of the provided
     /// ``XMLElement`` instances.
     ///
-    /// - Parameter elems:  An array of ``XMLElement`` instances to match
-    ///                     against.
+    /// - Parameter elems:  An array of ``XMLElement`` instances to match.
     public func expectElement(_ elems: [E]) throws {
         guard isElement(elems)
         else { throw XMLError.unexpectedElement(element.require().name, elems.map { $0.name }) }
     }
 
     /// Returns a Boolean value indicating whether there is a child element node
-    /// of this instance matching the given ``XMLElement`` instance.
+    /// of this instance matching the provided ``XMLElement`` instance.
     ///
-    /// - Parameter elem:   An ``XMLElement`` instance to match against.
+    /// - Parameter elem:   An ``XMLElement`` instance to match.
     ///
     /// - Returns:  `true` if there is a matching child element node. If this
     ///             instance is not an element node, or if there are no matches,
@@ -35,10 +34,9 @@ extension XMLNode {
     }
 
     /// Returns a Boolean value indicating whether there is a child element node
-    /// of this instance matching any of the given ``XMLElement`` instances.
+    /// of this instance matching any of the provided ``XMLElement`` instances.
     ///
-    /// - Parameter elems:  An array of ``XMLElement`` instances to match
-    ///                     against.
+    /// - Parameter elems:  An array of ``XMLElement`` instances to match.
     ///
     /// - Returns:  `true` if there is a matching child element node. If this
     ///             instance is not an element node, or if there are no matches,
@@ -48,9 +46,9 @@ extension XMLNode {
     }
 
     /// Returns the first transformed child element node of this instance
-    /// matching the given ``XMLElement`` instance.
+    /// matching the provided ``XMLElement`` instance.
     ///
-    /// - Parameter elem:       An ``XMLElement`` instance to match against.
+    /// - Parameter elem:       An ``XMLElement`` instance to match.
     /// - Parameter transform:  A mapping closure. `transform` accepts a node as
     ///                         its parameter and returns a transformed value of
     ///                         the same or of a different type.
@@ -64,10 +62,9 @@ extension XMLNode {
     }
 
     /// Returns the first transformed child element node of this instance
-    /// matching any of the given ``XMLElement`` instances.
+    /// matching any of the provided ``XMLElement`` instances.
     ///
-    /// - Parameter elems:      An array of ``XMLElement`` instances to match
-    ///                         against.
+    /// - Parameter elems:      An array of ``XMLElement`` instances to match.
     /// - Parameter transform:  A mapping closure. `transform` accepts a node as
     ///                         its parameter and returns a transformed value of
     ///                         the same or of a different type.
@@ -84,9 +81,9 @@ extension XMLNode {
     }
 
     /// Returns an array of all transformed child element nodes of this instance
-    /// matching the given ``XMLElement`` instance.
+    /// matching the provided ``XMLElement`` instance.
     ///
-    /// - Parameter elem:       An ``XMLElement`` instance to match against.
+    /// - Parameter elem:       An ``XMLElement`` instance to match.
     /// - Parameter transform:  A mapping closure. `transform` accepts a node as
     ///                         its parameter and returns a transformed value of
     ///                         the same or of a different type.
@@ -100,10 +97,9 @@ extension XMLNode {
     }
 
     /// Returns an array of all transformed child element nodes of this instance
-    /// matching any of the given ``XMLElement`` instances.
+    /// matching any of the provided ``XMLElement`` instances.
     ///
-    /// - Parameter elems:      An array of ``XMLElement`` instances to match
-    ///                         against.
+    /// - Parameter elems:      An array of ``XMLElement`` instances to match.
     /// - Parameter transform:  A mapping closure. `transform` accepts a node as
     ///                         its parameter and returns a transformed value of
     ///                         the same or of a different type.
@@ -122,9 +118,9 @@ extension XMLNode {
     }
 
     /// Returns the first transformed child element node of this instance
-    /// matching the given ``XMLElement`` instance.
+    /// matching the provided ``XMLElement`` instance.
     ///
-    /// - Parameter elem:       An ``XMLElement`` instance to match against.
+    /// - Parameter elem:       An ``XMLElement`` instance to match.
     /// - Parameter transform:  A mapping closure. `transform` accepts a node as
     ///                         its parameter and returns a transformed value of
     ///                         the same or of a different type.
@@ -138,10 +134,9 @@ extension XMLNode {
     }
 
     /// Returns the first transformed child element node of this instance
-    /// matching any of the given ``XMLElement`` instances.
+    /// matching any of the provided ``XMLElement`` instances.
     ///
-    /// - Parameter elems:      An array of ``XMLElement`` instances to match
-    ///                         against.
+    /// - Parameter elems:      An array of ``XMLElement`` instances to match.
     /// - Parameter transform:  A mapping closure. `transform` accepts a node as
     ///                         its parameter and returns a transformed value of
     ///                         the same or of a different type.
@@ -158,9 +153,9 @@ extension XMLNode {
     }
 
     /// Returns an array of all transformed child element nodes of this instance
-    /// matching the given ``XMLElement`` instance.
+    /// matching the provided ``XMLElement`` instance.
     ///
-    /// - Parameter elem:       An ``XMLElement`` instance to match against.
+    /// - Parameter elem:       An ``XMLElement`` instance to match.
     /// - Parameter transform:  A mapping closure. `transform` accepts a node as
     ///                         its parameter and returns a transformed value of
     ///                         the same or of a different type.
@@ -174,10 +169,9 @@ extension XMLNode {
     }
 
     /// Returns an array of all transformed child element nodes of this instance
-    /// matching any of the given ``XMLElement`` instances.
+    /// matching any of the provided ``XMLElement`` instances.
     ///
-    /// - Parameter elems:      An array of ``XMLElement`` instances to match
-    ///                         against.
+    /// - Parameter elems:      An array of ``XMLElement`` instances to match.
     /// - Parameter transform:  A mapping closure. `transform` accepts a node as
     ///                         its parameter and returns a transformed value of
     ///                         the same or of a different type.
@@ -208,9 +202,9 @@ extension XMLNode {
     }
 
     /// Returns the transformed value of the first attribute node of this
-    /// instance matching the given ``XMLAttribute`` instance.
+    /// instance matching the provided ``XMLAttribute`` instance.
     ///
-    /// - Parameter attr:       An ``XMLAttribute`` instance to match against.
+    /// - Parameter attr:       An ``XMLAttribute`` instance to match.
     /// - Parameter validate:   A validation closure. `validate` accepts a
     ///                         string value as its parameter and optionally
     ///                         returns a transformed value of the same or of a
@@ -229,10 +223,9 @@ extension XMLNode {
     }
 
     /// Returns the transformed value of the first attribute node of this
-    /// instance matching any of the given ``XMLAttribute`` instances.
+    /// instance matching any of the provided ``XMLAttribute`` instances.
     ///
-    /// - Parameter attrs:      An array of ``XMLAttribute`` instances to match
-    ///                         against.
+    /// - Parameter attrs:      An array of ``XMLAttribute`` instances to match.
     /// - Parameter validate:   A validation closure. `validate` accepts a
     ///                         string value as its parameter and optionally
     ///                         returns a transformed value of the same or of a
@@ -260,9 +253,9 @@ extension XMLNode {
     }
 
     /// Returns the transformed ``value`` of the first child element node of
-    /// this instance matching the given ``XMLElement`` instance.
+    /// this instance matching the provided ``XMLElement`` instance.
     ///
-    /// - Parameter elem:       An ``XMLElement`` instance to match against.
+    /// - Parameter elem:       An ``XMLElement`` instance to match.
     /// - Parameter validate:   A validation closure. `validate` accepts a
     ///                         string value as its parameter and optionally
     ///                         returns a transformed value of the same or of a
@@ -281,10 +274,9 @@ extension XMLNode {
     }
 
     /// Returns the transformed ``value`` of the first child element node of
-    /// this instance matching any of the given ``XMLElement`` instances.
+    /// this instance matching any of the provided ``XMLElement`` instances.
     ///
-    /// - Parameter elems:      An array of ``XMLElement`` instances to match
-    ///                         against.
+    /// - Parameter elems:      An array of ``XMLElement`` instances to match.
     /// - Parameter validate:   A validation closure. `validate` accepts a
     ///                         string value as its parameter and optionally
     ///                         returns a transformed value of the same or of a
@@ -311,9 +303,9 @@ extension XMLNode {
     }
 
     /// Returns the transformed value of the first attribute node of this
-    /// instance matching the given ``XMLAttribute`` instance.
+    /// instance matching the provided ``XMLAttribute`` instance.
     ///
-    /// - Parameter attr:       An ``XMLAttribute`` instance to match against.
+    /// - Parameter attr:       An ``XMLAttribute`` instance to match.
     /// - Parameter validate:   A validation closure. `validate` accepts a
     ///                         string value as its parameter and optionally
     ///                         returns a transformed value of the same or of a
@@ -332,10 +324,9 @@ extension XMLNode {
     }
 
     /// Returns the transformed value of the first attribute node of this
-    /// instance matching any of the given ``XMLAttribute`` instances.
+    /// instance matching any of the provided ``XMLAttribute`` instances.
     ///
-    /// - Parameter attrs:      An array of ``XMLAttribute`` instances to match
-    ///                         against.
+    /// - Parameter attrs:      An array of ``XMLAttribute`` instances to match.
     /// - Parameter validate:   A validation closure. `validate` accepts a
     ///                         string value as its parameter and optionally
     ///                         returns a transformed value of the same or of a
@@ -363,9 +354,9 @@ extension XMLNode {
     }
 
     /// Returns the transformed ``value`` of the first child element node of
-    /// this instance matching the given ``XMLElement`` instance.
+    /// this instance matching the provided ``XMLElement`` instance.
     ///
-    /// - Parameter elem:       An ``XMLElement`` instance to match against.
+    /// - Parameter elem:       An ``XMLElement`` instance to match.
     /// - Parameter validate:   A validation closure. `validate` accepts a
     ///                         string value as its parameter and optionally
     ///                         returns a transformed value of the same or of a
@@ -384,10 +375,9 @@ extension XMLNode {
     }
 
     /// Returns the transformed ``value`` of the first child element node of
-    /// this instance matching any of the given ``XMLElement`` instances.
+    /// this instance matching any of the provided ``XMLElement`` instances.
     ///
-    /// - Parameter elems:      An array of ``XMLElement`` instances to match
-    ///                         against.
+    /// - Parameter elems:      An array of ``XMLElement`` instances to match.
     /// - Parameter validate:   A validation closure. `validate` accepts a
     ///                         string value as its parameter and optionally
     ///                         returns a transformed value of the same or of a

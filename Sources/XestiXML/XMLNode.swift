@@ -150,9 +150,9 @@ extension XMLNode {
     }
 
     /// Returns an array of all child element nodes of this instance matching
-    /// the given ``XMLElement`` instance.
+    /// the provided ``XMLElement`` instance.
     ///
-    /// - Parameter elem:   An ``XMLElement`` instance to match against.
+    /// - Parameter elem:   An ``XMLElement`` instance to match.
     ///
     /// - Returns:  An array of all matching child element nodes. If this
     ///             instance is not an element node, or if there are no matches,
@@ -162,10 +162,9 @@ extension XMLNode {
     }
 
     /// Returns an array of all child element nodes of this instance matching
-    /// any of the given ``XMLElement`` instances.
+    /// any of the provided ``XMLElement`` instances.
     ///
-    /// - Parameter elems:  An array of ``XMLElement`` instances to match
-    ///                     against.
+    /// - Parameter elems:  An array of ``XMLElement`` instances to match.
     ///
     /// - Returns:  An array of all matching child element nodes. If this
     ///             instance is not an element node, or if there are no matches,
@@ -174,10 +173,10 @@ extension XMLNode {
         children?.filter { $0.isElement(elems) } ?? []
     }
 
-    /// Returns the first child element node of this instance matching the given
+    /// Returns the first child element node of this instance matching the provided
     /// ``XMLElement`` instance.
     ///
-    /// - Parameter elem:   An ``XMLElement`` instance to match against.
+    /// - Parameter elem:   An ``XMLElement`` instance to match.
     ///
     /// - Returns:  The first matching child element node. If this instance is
     ///             not an element node, or if there are no matches, this method
@@ -187,10 +186,9 @@ extension XMLNode {
     }
 
     /// Returns the first child element node of this instance matching any of
-    /// the given ``XMLElement`` instances.
+    /// the provided ``XMLElement`` instances.
     ///
-    /// - Parameter elems:  An array of ``XMLElement`` instances to match
-    ///                     against.
+    /// - Parameter elems:  An array of ``XMLElement`` instances to match.
     ///
     /// - Returns:  The first matching child element node. If this instance is
     ///             not an element node, or if there are no matches, this method
@@ -200,9 +198,9 @@ extension XMLNode {
     }
 
     /// Returns a Boolean value indicating whether this instance is an element
-    /// node matching the given ``XMLElement`` instance.
+    /// node matching the provided ``XMLElement`` instance.
     ///
-    /// - Parameter elem:   An ``XMLElement`` instance to match against.
+    /// - Parameter elem:   An ``XMLElement`` instance to match.
     ///
     /// - Returns:  `true` if this instance is a matching element node;
     ///             otherwise, `false`.
@@ -211,10 +209,9 @@ extension XMLNode {
     }
 
     /// Returns a Boolean value indicating whether this instance is an element
-    /// node matching any of the given ``XMLElement`` instances.
+    /// node matching any of the provided ``XMLElement`` instances.
     ///
-    /// - Parameter elems:  An array of ``XMLElement`` instances to match
-    ///                     against.
+    /// - Parameter elems:  An array of ``XMLElement`` instances to match.
     ///
     /// - Returns:  `true` if this instance is a matching element node;
     ///             otherwise, `false`.

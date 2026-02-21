@@ -4,9 +4,9 @@ import XestiTools
 
 /// A type-safe XML element.
 public protocol XMLElement: Equatable, Sendable {
-    /// Creates a new XML element with the specified name and namespace URI.
+    /// Creates a new XML element with the provided name and namespace URI.
     ///
-    /// If the specified name is empty, this initializer stops program
+    /// If the provided name is empty, this initializer stops program
     /// execution.
     ///
     /// - Parameter name:   The name of the XML element.
@@ -14,9 +14,9 @@ public protocol XMLElement: Equatable, Sendable {
     init(_ name: String,
          _ uri: String?)
 
-    /// Creates a new XML element with the specified name and namespace URI.
+    /// Creates a new XML element with the provided name and namespace URI.
     ///
-    /// If the specified name is empty, this initializer returns `nil`.
+    /// If the provided name is empty, this initializer returns `nil`.
     ///
     /// - Parameter name:   The name of the XML element.
     /// - Parameter uri:    The optional namespace URI of the XML element.
