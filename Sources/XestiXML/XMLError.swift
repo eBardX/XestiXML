@@ -51,7 +51,7 @@ public enum XMLError {
 
     /// An unexpected root element was encountered in the XML node tree.
     ///
-    /// As associated values, this case contains the unexpected root element
+    /// As an associated value, this case contains the unexpected root element
     /// name.
     case unexpectedRootElement(String)
 
@@ -72,7 +72,7 @@ public enum XMLError {
 
     /// An unsupported root element was encountered in the XML node tree.
     ///
-    /// As associated values, this case contains the unsupported root element
+    /// As an associated value, this case contains the unsupported root element
     /// name.
     case unsupportedRootElement(String)
 }
