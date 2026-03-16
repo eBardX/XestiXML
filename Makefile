@@ -19,14 +19,18 @@ lint:
 
 preview:
 	@ open "http://localhost:8080/documentation/xestixml"
-	@ swift package --disable-sandbox     \
-					preview-documentation \
+	@ swift package --disable-sandbox                     \
+					preview-documentation                 \
+					--enable-inherited-docs               \
+					--experimental-documentation-coverage \
 					--product $(XESTI_XML_PRODUCT)
 
 publish:
 	@ swift package --allow-writing-to-directory $(XESTI_XML_DOCS_DIR) \
 					generate-documentation                             \
 					--disable-indexing                                 \
+					--enable-inherited-docs                            \
+					--experimental-documentation-coverage              \
 					--hosting-base-path $(HOSTING_BASE_PATH)           \
 					--output-path $(XESTI_XML_DOCS_DIR)                \
 					--product $(XESTI_XML_PRODUCT)                     \
