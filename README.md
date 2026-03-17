@@ -19,5 +19,5 @@ John Gary Pusey (ebardx@gmail.com)
 XestiXML is available under [the MIT license][license].
 
 [docc]:     https://www.swift.org/documentation/docc/
-[license]:  https://github.com/eBardX/XestiXML/blob/master/LICENSE.md
+[license]:  https://github.com/eBardX/XestiXML/blob/main/LICENSE.md
 [refdoc]:   https://eBardX.github.io/XestiXML/documentation/xestixml
