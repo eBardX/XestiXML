@@ -110,6 +110,7 @@ extension XMLParser {
         // internal func parser(_ parser: BaseXMLParser,
         //                      foundProcessingInstructionWithTarget target: String,
         //                      data: String?) {
+        // }
 
         // internal func parser(_ parser: BaseXMLParser,
         //                      foundUnparsedEntityDeclarationWithName name: String,

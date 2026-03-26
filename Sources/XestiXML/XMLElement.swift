@@ -75,7 +75,7 @@ extension XMLElement where Self: StringRepresentable {
         guard uri == nil
         else { fatalError("uri must be nil!") }
 
-        self.init(name)
+        self.init(stringValue: name)!   // swiftlint:disable:this force_unwrapping
     }
 
     public init?(name: String,

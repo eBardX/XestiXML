@@ -1,12 +1,24 @@
 // © 2026 John Gary Pusey (see LICENSE.md)
 
 import Testing
+import XestiTools
 @testable import XestiXML
 
 private enum TestAttribute: String, XMLAttribute {
     case id
     case name
     case value
+}
+
+private struct SRTestAttribute: XMLAttribute, StringRepresentable {
+    let stringValue: String
+
+    init?(stringValue: String) {
+        guard Self.isValid(stringValue)
+        else { return nil }
+
+        self.stringValue = stringValue
+    }
 }
 
 struct XMLAttributeTests {
@@ -73,5 +85,34 @@ extension XMLAttributeTests {
         #expect(TestAttribute.id.name == "id")
         #expect(TestAttribute.name.name == "name")
         #expect(TestAttribute.value.name == "value")
+    }
+
+    @Test
+    func test_stringRepresentableFailableInitWithEmptyName() {
+        let attr = SRTestAttribute(name: "")
+
+        #expect(attr == nil)
+    }
+
+    @Test
+    func test_stringRepresentableFailableInitWithValidName() {
+        let attr = SRTestAttribute(name: "id")
+
+        #expect(attr != nil)
+        #expect(attr?.name == "id")
+    }
+
+    @Test
+    func test_stringRepresentableInitWithValidName() {
+        let attr = SRTestAttribute("id")
+
+        #expect(attr.name == "id")
+    }
+
+    @Test
+    func test_stringRepresentableNameProperty() {
+        let attr = SRTestAttribute("test")
+
+        #expect(attr.name == "test")
     }
 }

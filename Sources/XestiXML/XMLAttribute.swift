@@ -52,7 +52,7 @@ extension XMLAttribute where Self: StringRepresentable {
     // MARK: Public Initializers
 
     public init(_ name: String) {
-        self.init(name)
+        self.init(stringValue: name)!   // swiftlint:disable:this force_unwrapping
     }
 
     public init?(name: String) {

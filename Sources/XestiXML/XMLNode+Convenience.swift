@@ -1,7 +1,5 @@
 // © 2022–2026 John Gary Pusey (see LICENSE.md)
 
-private import XestiTools
-
 extension XMLNode {
 
     // MARK: Public Instance Methods
@@ -20,7 +18,8 @@ extension XMLNode {
     /// - Parameter elems:  An array of ``XMLElement`` instances to match.
     public func expectElement(_ elems: [E]) throws {
         guard isElement(elems)
-        else { throw XMLError.unexpectedElement(element.require().name, elems.map { $0.name }) }
+        else { throw XMLError.unexpectedElement(try _requireName(),
+                                                elems.map { $0.name }) }
     }
 
     /// Returns a Boolean value indicating whether there is a child element node
@@ -149,7 +148,8 @@ extension XMLNode {
     public func requiredChildElement<T>(_ elems: [E],
                                         _ transform: (XMLNode<E, A>) throws -> T) throws -> T {
         guard let node = firstChildElement(elems)
-        else { throw XMLError.missingRequiredChildElement(element.require().name, elems.map { $0.name }) }
+        else { throw XMLError.missingRequiredChildElement(try _requireName(),
+                                                          elems.map { $0.name }) }
 
         return try transform(node)
     }
@@ -186,7 +186,8 @@ extension XMLNode {
         let nodes = allChildElements(elems)
 
         guard !nodes.isEmpty
-        else { throw XMLError.missingRequiredChildElement(element.require().name, elems.map { $0.name }) }
+        else { throw XMLError.missingRequiredChildElement(try _requireName(),
+                                                          elems.map { $0.name }) }
 
         return try nodes.map { try transform($0) }
     }
@@ -194,13 +195,13 @@ extension XMLNode {
     /// Convenience method that complains that this instance is an unexpected
     /// root element.
     public func unexpectedRootElement() throws {
-        throw XMLError.unexpectedRootElement(element.require().name)
+        throw XMLError.unexpectedRootElement(try _requireName())
     }
 
     /// Convenience method that complains that this instance is an unsupported
     /// root element.
     public func unsupportedRootElement() throws {
-        throw XMLError.unsupportedRootElement(element.require().name)
+        throw XMLError.unsupportedRootElement(try _requireName())
     }
 
     /// Returns the transformed value of the first attribute node of this
@@ -345,7 +346,7 @@ extension XMLNode {
                                             _ validate: (String) -> T? = { $0 }) throws -> T {
         guard let attributes,
               let attrValue = _firstAttribute(attrs, attributes)
-        else { throw XMLError.missingRequiredAttribute(element.require().name, attrs.map { $0.name }) }
+        else { throw XMLError.missingRequiredAttribute(try _requireName(), attrs.map { $0.name }) }
 
         let (value, strValue, isValid) = _validateValue(attrValue, validate)
 
@@ -395,7 +396,7 @@ extension XMLNode {
     public func valueOfRequiredChildElement<T>(_ elems: [E],
                                                _ validate: (String) -> T? = { $0 }) throws -> T {
         guard let node = firstChildElement(elems)
-        else { throw XMLError.missingRequiredChildElement(element.require().name, elems.map { $0.name }) }
+        else { throw XMLError.missingRequiredChildElement(try _requireName(), elems.map { $0.name }) }
 
         let (value, strValue, isValid) = _validateValue(node.value, validate)
 
@@ -403,6 +404,15 @@ extension XMLNode {
         else { throw XMLError.invalidElementValue(elems.map { $0.name }, strValue) }
 
         return value
+    }
+
+    // MARK: Private Instance Methods
+
+    private func _requireName() throws -> String {
+        guard let name
+        else { throw XMLError.internalFailure }
+
+        return name
     }
 }
 

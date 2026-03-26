@@ -8,7 +8,7 @@
 ///
 ///   1. A type-safe ``XMLElement`` instance encapsulating the element name and
 ///      the optional namespace URI.
-///   2. A dictionary of assocated attributes where the key is a type-safe
+///   2. A dictionary of associated attributes where the key is a type-safe
 ///      ``XMLAttribute`` instance encapsulating the attribute name, and the
 ///      value is the attribute (string) value. This dictionary may be empty.
 ///   3. An array of child `XMLNode` instances. This array may be empty.
@@ -47,7 +47,7 @@ extension XMLNode {
 
     // MARK: Public Instance Properties
 
-    /// A dictionary of assocated attributes, if this instance is an element
+    /// A dictionary of associated attributes, if this instance is an element
     /// node; otherwise, `nil`.
     public var attributes: [A: String]? {
         switch content {
@@ -250,15 +250,17 @@ extension XMLNode: CustomStringConvertible {
         case let .elem(elem, attrs, kids):
             var result = "<\(elem.name)"
 
-            for (attr, val) in attrs {
+            for (attr, val) in attrs.sorted(by: { $0.key.name < $1.key.name }) {
                 result += " \(attr.name)=\"\(val)\""
             }
 
             result += ">"
 
             if !kids.isEmpty {
-                result += "\(kids)"
+                result += kids.map(\.description).joined()
             }
+
+            result += "</\(elem.name)>"
 
             return result
 

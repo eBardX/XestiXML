@@ -1,12 +1,24 @@
 // © 2026 John Gary Pusey (see LICENSE.md)
 
 import Testing
+import XestiTools
 @testable import XestiXML
 
 private enum TestElement: String, XMLElement {
     case child
     case item
     case root
+}
+
+private struct SRTestElement: XMLElement, StringRepresentable {
+    let stringValue: String
+
+    init?(stringValue: String) {
+        guard Self.isValid(stringValue)
+        else { return nil }
+
+        self.stringValue = stringValue
+    }
 }
 
 struct XMLElementTests {
@@ -71,5 +83,48 @@ extension XMLElementTests {
     func test_uriPropertyAlwaysNil() {
         #expect(TestElement.root.uri == nil)
         #expect(TestElement.child.uri == nil)
+    }
+
+    @Test
+    func test_stringRepresentableFailableInitWithEmptyName() {
+        let elem = SRTestElement(name: "", uri: nil)
+
+        #expect(elem == nil)
+    }
+
+    @Test
+    func test_stringRepresentableFailableInitWithNonNilURI() {
+        let elem = SRTestElement(name: "root", uri: "http://example.com")
+
+        #expect(elem == nil)
+    }
+
+    @Test
+    func test_stringRepresentableFailableInitWithValidName() {
+        let elem = SRTestElement(name: "root", uri: nil)
+
+        #expect(elem != nil)
+        #expect(elem?.name == "root")
+    }
+
+    @Test
+    func test_stringRepresentableInitWithValidNameAndNilURI() {
+        let elem = SRTestElement("root", nil)
+
+        #expect(elem.name == "root")
+    }
+
+    @Test
+    func test_stringRepresentableNameProperty() {
+        let elem = SRTestElement("test", nil)
+
+        #expect(elem.name == "test")
+    }
+
+    @Test
+    func test_stringRepresentableURIAlwaysNil() {
+        let elem = SRTestElement("root", nil)
+
+        #expect(elem.uri == nil)
     }
 }

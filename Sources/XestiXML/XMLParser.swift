@@ -39,7 +39,7 @@ extension XMLParser {
     ///                     parse.
     ///
     /// - Returns:  The ``XMLNode`` representing the root element of the parsed
-    ///             XML document..
+    ///             XML document.
     public func parse(_ data: Data) throws -> XMLNode<E, A> {
         let baseParser = BaseXMLParser(data: data)
         let delegate = Delegate()
