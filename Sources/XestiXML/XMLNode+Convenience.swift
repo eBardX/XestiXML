@@ -1,5 +1,7 @@
 // © 2022–2026 John Gary Pusey (see LICENSE.md)
 
+private import XestiTools
+
 extension XMLNode {
 
     // MARK: Public Instance Methods

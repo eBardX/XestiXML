@@ -1,7 +1,8 @@
 // © 2022–2026 John Gary Pusey (see LICENSE.md)
 
-import Foundation
-import XestiTools
+public import Foundation
+
+private import XestiTools
 
 /// A simplified XML parser.
 ///

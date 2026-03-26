@@ -19,7 +19,12 @@ let package = Package(name: "XestiXML",
                       swiftLanguageModes: [.v6])
 
 let swiftSettings: [SwiftSetting] = [.defaultIsolation(nil),
-                                     .enableUpcomingFeature("ExistentialAny")]
+                                     .enableUpcomingFeature("ExistentialAny"),
+                                     .enableUpcomingFeature("ImmutableWeakCaptures"),
+                                     .enableUpcomingFeature("InferIsolatedConformances"),
+                                     .enableUpcomingFeature("InternalImportsByDefault"),
+                                     .enableUpcomingFeature("MemberImportVisibility"),
+                                     .enableUpcomingFeature("NonisolatedNonsendingByDefault")]
 
 for target in package.targets {
     var settings = target.swiftSettings ?? []

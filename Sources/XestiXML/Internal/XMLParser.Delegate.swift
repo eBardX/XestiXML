@@ -1,6 +1,6 @@
 // © 2022–2026 John Gary Pusey (see LICENSE.md)
 
-import Foundation
+internal import Foundation
 
 extension XMLParser {
 

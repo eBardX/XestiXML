@@ -1,7 +1,8 @@
 // © 2022–2026 John Gary Pusey (see LICENSE.md)
 
-import Foundation
-import XestiTools
+internal import Foundation
+
+private import XestiTools
 
 extension XMLParser {
 

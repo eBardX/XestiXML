@@ -1,6 +1,6 @@
 // © 2022–2026 John Gary Pusey (see LICENSE.md)
 
-import XestiTools
+public import XestiTools
 
 /// An error that occurs while parsing the XML document or while matching the
 /// XML node tree.
