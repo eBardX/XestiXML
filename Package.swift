@@ -15,7 +15,9 @@ let package = Package(name: "XestiXML",
                                               .upToNextMajor(from: "7.0.0"))],
                       targets: [.target(name: "XestiXML",
                                         dependencies: [.product(name: "XestiTools",
-                                                                package: "XestiTools")])],
+                                                                package: "XestiTools")]),
+                                .testTarget(name: "XestiXMLTests",
+                                            dependencies: [.target(name: "XestiXML")])],
                       swiftLanguageModes: [.v6])
 
 let swiftSettings: [SwiftSetting] = [.defaultIsolation(nil),
