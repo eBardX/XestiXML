@@ -8,4 +8,4 @@ XML tools.
 
 ## Overview
 
-The XestiXML framework provides a variety of XML tools for Swift.
+The XestiXML framework provides a collection of XML tools for Swift.
