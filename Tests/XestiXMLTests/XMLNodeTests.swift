@@ -3,18 +3,6 @@
 import Testing
 @testable import XestiXML
 
-private enum TestElement: String, XMLElement {
-    case child
-    case item
-    case other
-    case root
-}
-
-private enum TestAttribute: String, XMLAttribute {
-    case id
-    case name
-}
-
 struct XMLNodeTests {
 }
 
@@ -38,7 +26,7 @@ extension XMLNodeTests {
     }
 
     @Test
-    func test_allChildElementsMatchingMultiple() {
+    func test_allChildElements_matchingMultiple() {
         let child1 = XMLNode<TestElement, TestAttribute>(element: .child,
                                                          attributes: [:],
                                                          children: [])
@@ -56,7 +44,7 @@ extension XMLNodeTests {
     }
 
     @Test
-    func test_allChildElementsMatchingSingle() {
+    func test_allChildElements_matchingSingle() {
         let child1 = XMLNode<TestElement, TestAttribute>(element: .child,
                                                          attributes: [:],
                                                          children: [])
@@ -74,14 +62,47 @@ extension XMLNodeTests {
     }
 
     @Test
-    func test_allChildElementsOnTextNode() {
+    func test_allChildElements_textNode() {
         let node = XMLNode<TestElement, TestAttribute>(text: "text")
 
         #expect(node.allChildElements().isEmpty)
     }
 
     @Test
-    func test_descriptionOfElementNode() {
+    func test_attributes_elementNode() {
+        let node = XMLNode<TestElement, TestAttribute>(element: .root,
+                                                       attributes: [.id: "1"],
+                                                       children: [])
+
+        #expect(node.attributes == [.id: "1"])
+    }
+
+    @Test
+    func test_attributes_textNode() {
+        let node = XMLNode<TestElement, TestAttribute>(text: "hello")
+
+        #expect(node.attributes == nil)
+    }
+
+    @Test
+    func test_children_elementNode() {
+        let child = XMLNode<TestElement, TestAttribute>(text: "hello")
+        let node = XMLNode(element: .root,
+                           attributes: [:],
+                           children: [child])
+
+        #expect(node.children?.count == 1)
+    }
+
+    @Test
+    func test_children_textNode() {
+        let node = XMLNode<TestElement, TestAttribute>(text: "hello")
+
+        #expect(node.children == nil)
+    }
+
+    @Test
+    func test_description_elementNode() {
         let node = XMLNode<TestElement, TestAttribute>(element: .root,
                                                        attributes: [:],
                                                        children: [])
@@ -90,7 +111,7 @@ extension XMLNodeTests {
     }
 
     @Test
-    func test_descriptionOfElementNodeWithAttributes() {
+    func test_description_elementNodeWithAttributes() {
         let node = XMLNode<TestElement, TestAttribute>(element: .root,
                                                        attributes: [.id: "1"],
                                                        children: [])
@@ -99,7 +120,7 @@ extension XMLNodeTests {
     }
 
     @Test
-    func test_descriptionOfElementNodeWithChildren() {
+    func test_description_elementNodeWithChildren() {
         let child = XMLNode<TestElement, TestAttribute>(text: "hello")
         let node = XMLNode(element: .root,
                            attributes: [:],
@@ -110,33 +131,14 @@ extension XMLNodeTests {
     }
 
     @Test
-    func test_descriptionOfTextNode() {
+    func test_description_textNode() {
         let node = XMLNode<TestElement, TestAttribute>(text: "hello")
 
         #expect(node.description == "\"hello\"")
     }
 
     @Test
-    func test_elementNodeAttributes() {
-        let node = XMLNode<TestElement, TestAttribute>(element: .root,
-                                                       attributes: [.id: "1"],
-                                                       children: [])
-
-        #expect(node.attributes == [.id: "1"])
-    }
-
-    @Test
-    func test_elementNodeChildren() {
-        let child = XMLNode<TestElement, TestAttribute>(text: "hello")
-        let node = XMLNode(element: .root,
-                           attributes: [:],
-                           children: [child])
-
-        #expect(node.children?.count == 1)
-    }
-
-    @Test
-    func test_elementNodeElement() {
+    func test_element_elementNode() {
         let node = XMLNode<TestElement, TestAttribute>(element: .root,
                                                        attributes: [:],
                                                        children: [])
@@ -145,77 +147,14 @@ extension XMLNodeTests {
     }
 
     @Test
-    func test_elementNodeIsElement() {
-        let node = XMLNode<TestElement, TestAttribute>(element: .root,
-                                                       attributes: [:],
-                                                       children: [])
+    func test_element_textNode() {
+        let node = XMLNode<TestElement, TestAttribute>(text: "hello")
 
-        #expect(node.isElement)
+        #expect(node.element == nil)
     }
 
     @Test
-    func test_elementNodeIsNotText() {
-        let node = XMLNode<TestElement, TestAttribute>(element: .root,
-                                                       attributes: [:],
-                                                       children: [])
-
-        #expect(!node.isText)
-    }
-
-    @Test
-    func test_elementNodeName() {
-        let node = XMLNode<TestElement, TestAttribute>(element: .root,
-                                                       attributes: [:],
-                                                       children: [])
-
-        #expect(node.name == "root")
-    }
-
-    @Test
-    func test_elementNodeURI() {
-        let node = XMLNode<TestElement, TestAttribute>(element: .root,
-                                                       attributes: [:],
-                                                       children: [])
-
-        #expect(node.uri == nil)
-    }
-
-    @Test
-    func test_elementNodeValueFromNestedElements() {
-        let innerText = XMLNode<TestElement, TestAttribute>(text: "inner")
-        let inner = XMLNode(element: .child,
-                            attributes: [:],
-                            children: [innerText])
-        let outerText = XMLNode<TestElement, TestAttribute>(text: "outer")
-        let node = XMLNode(element: .root,
-                           attributes: [:],
-                           children: [outerText, inner])
-
-        #expect(node.value == "outerinner")
-    }
-
-    @Test
-    func test_elementNodeValueFromTextChildren() {
-        let text1 = XMLNode<TestElement, TestAttribute>(text: "hello ")
-        let text2 = XMLNode<TestElement, TestAttribute>(text: "world")
-        let node = XMLNode(element: .root,
-                           attributes: [:],
-                           children: [text1, text2])
-
-        #expect(node.value == "hello world")
-    }
-
-    @Test
-    func test_elementNodeValueWithNoChildren() {
-        let node = XMLNode<TestElement, TestAttribute>(element: .root,
-                                                       attributes: [:],
-                                                       children: [])
-
-        #expect(node.value?.isEmpty == true)
-    }
-
-    @Test
-    func test_firstChildElementFound() {
+    func test_firstChildElement_found() {
         let child1 = XMLNode<TestElement, TestAttribute>(element: .child,
                                                          attributes: [:],
                                                          children: [])
@@ -231,7 +170,7 @@ extension XMLNodeTests {
     }
 
     @Test
-    func test_firstChildElementFromArray() {
+    func test_firstChildElement_fromArray() {
         let child = XMLNode<TestElement, TestAttribute>(element: .item,
                                                         attributes: [:],
                                                         children: [])
@@ -243,7 +182,7 @@ extension XMLNodeTests {
     }
 
     @Test
-    func test_firstChildElementNotFound() {
+    func test_firstChildElement_notFound() {
         let child = XMLNode<TestElement, TestAttribute>(element: .child,
                                                         attributes: [:],
                                                         children: [])
@@ -255,14 +194,23 @@ extension XMLNodeTests {
     }
 
     @Test
-    func test_firstChildElementOnTextNode() {
+    func test_firstChildElement_textNode() {
         let node = XMLNode<TestElement, TestAttribute>(text: "text")
 
         #expect(node.firstChildElement(.child) == nil)
     }
 
     @Test
-    func test_isElementFromArray() {
+    func test_isElement_elementNode() {
+        let node = XMLNode<TestElement, TestAttribute>(element: .root,
+                                                       attributes: [:],
+                                                       children: [])
+
+        #expect(node.isElement)
+    }
+
+    @Test
+    func test_isElement_fromArray() {
         let node = XMLNode<TestElement, TestAttribute>(element: .root,
                                                        attributes: [:],
                                                        children: [])
@@ -271,7 +219,7 @@ extension XMLNodeTests {
     }
 
     @Test
-    func test_isElementMatching() {
+    func test_isElement_matching() {
         let node = XMLNode<TestElement, TestAttribute>(element: .root,
                                                        attributes: [:],
                                                        children: [])
@@ -280,7 +228,7 @@ extension XMLNodeTests {
     }
 
     @Test
-    func test_isElementNotMatching() {
+    func test_isElement_notMatching() {
         let node = XMLNode<TestElement, TestAttribute>(element: .root,
                                                        attributes: [:],
                                                        children: [])
@@ -289,63 +237,103 @@ extension XMLNodeTests {
     }
 
     @Test
-    func test_isElementOnTextNode() {
+    func test_isElement_textNode() {
         let node = XMLNode<TestElement, TestAttribute>(text: "text")
 
         #expect(!node.isElement(.root))
     }
 
     @Test
-    func test_textNodeAttributes() {
-        let node = XMLNode<TestElement, TestAttribute>(text: "hello")
-
-        #expect(node.attributes == nil)
-    }
-
-    @Test
-    func test_textNodeChildren() {
-        let node = XMLNode<TestElement, TestAttribute>(text: "hello")
-
-        #expect(node.children == nil)
-    }
-
-    @Test
-    func test_textNodeElement() {
-        let node = XMLNode<TestElement, TestAttribute>(text: "hello")
-
-        #expect(node.element == nil)
-    }
-
-    @Test
-    func test_textNodeIsNotElement() {
+    func test_isElement_textNodeIsFalse() {
         let node = XMLNode<TestElement, TestAttribute>(text: "hello")
 
         #expect(!node.isElement)
     }
 
     @Test
-    func test_textNodeIsText() {
+    func test_isText_elementNode() {
+        let node = XMLNode<TestElement, TestAttribute>(element: .root,
+                                                       attributes: [:],
+                                                       children: [])
+
+        #expect(!node.isText)
+    }
+
+    @Test
+    func test_isText_textNode() {
         let node = XMLNode<TestElement, TestAttribute>(text: "hello")
 
         #expect(node.isText)
     }
 
     @Test
-    func test_textNodeName() {
+    func test_name_elementNode() {
+        let node = XMLNode<TestElement, TestAttribute>(element: .root,
+                                                       attributes: [:],
+                                                       children: [])
+
+        #expect(node.name == "root")
+    }
+
+    @Test
+    func test_name_textNode() {
         let node = XMLNode<TestElement, TestAttribute>(text: "hello")
 
         #expect(node.name == nil)
     }
 
     @Test
-    func test_textNodeURI() {
+    func test_uri_elementNode() {
+        let node = XMLNode<TestElement, TestAttribute>(element: .root,
+                                                       attributes: [:],
+                                                       children: [])
+
+        #expect(node.uri == nil)
+    }
+
+    @Test
+    func test_uri_textNode() {
         let node = XMLNode<TestElement, TestAttribute>(text: "hello")
 
         #expect(node.uri == nil)
     }
 
     @Test
-    func test_textNodeValue() {
+    func test_value_elementNodeNestedElements() {
+        let innerText = XMLNode<TestElement, TestAttribute>(text: "inner")
+        let inner = XMLNode(element: .child,
+                            attributes: [:],
+                            children: [innerText])
+        let outerText = XMLNode<TestElement, TestAttribute>(text: "outer")
+        let node = XMLNode(element: .root,
+                           attributes: [:],
+                           children: [outerText, inner])
+
+        #expect(node.value == "outerinner")
+    }
+
+    @Test
+    func test_value_elementNodeNoChildren() {
+        let node = XMLNode<TestElement, TestAttribute>(element: .root,
+                                                       attributes: [:],
+                                                       children: [])
+
+        #expect(node.value?.isEmpty == true)
+    }
+
+    @Test
+    func test_value_elementNodeTextChildren() {
+        let text1 = XMLNode<TestElement, TestAttribute>(text: "hello ")
+        let text2 = XMLNode<TestElement, TestAttribute>(text: "world")
+        let node = XMLNode(element: .root,
+                           attributes: [:],
+                           children: [text1, text2])
+
+        #expect(node.value == "hello world")
+    }
+
+    @Test
+    func test_value_textNode() {
         let node = XMLNode<TestElement, TestAttribute>(text: "hello")
 
         #expect(node.value == "hello")

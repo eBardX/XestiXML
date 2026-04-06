@@ -4,23 +4,6 @@ import Testing
 import XestiTools
 @testable import XestiXML
 
-private enum TestElement: String, XMLElement {
-    case child
-    case item
-    case root
-}
-
-private struct SRTestElement: XMLElement, StringRepresentable {
-    let stringValue: String
-
-    init?(stringValue: String) {
-        guard Self.isValid(stringValue)
-        else { return nil }
-
-        self.stringValue = stringValue
-    }
-}
-
 struct XMLElementTests {
 }
 
@@ -28,7 +11,7 @@ struct XMLElementTests {
 
 extension XMLElementTests {
     @Test
-    func test_equalityDifferentValues() {
+    func test_equality_differentValues() {
         let elem1 = TestElement.root
         let elem2 = TestElement.child
 
@@ -36,7 +19,7 @@ extension XMLElementTests {
     }
 
     @Test
-    func test_equalitySameValues() {
+    func test_equality_sameValues() {
         let elem1 = TestElement.root
         let elem2 = TestElement.root
 
@@ -44,21 +27,21 @@ extension XMLElementTests {
     }
 
     @Test
-    func test_failableInitWithInvalidName() {
+    func test_failableInit_invalidName() {
         let elem = TestElement(name: "nonexistent", uri: nil)
 
         #expect(elem == nil)
     }
 
     @Test
-    func test_failableInitWithNonNilURI() {
+    func test_failableInit_nonNilURI() {
         let elem = TestElement(name: "root", uri: "http://example.com")
 
         #expect(elem == nil)
     }
 
     @Test
-    func test_failableInitWithValidName() {
+    func test_failableInit_validName() {
         let elem = TestElement(name: "root", uri: nil)
 
         #expect(elem != nil)
@@ -66,41 +49,35 @@ extension XMLElementTests {
     }
 
     @Test
-    func test_initWithValidNameAndNilURI() {
+    func test_init_validNameAndNilURI() {
         let elem = TestElement("root", nil)
 
         #expect(elem.name == "root")
     }
 
     @Test
-    func test_nameProperty() {
+    func test_name() {
         #expect(TestElement.root.name == "root")
         #expect(TestElement.child.name == "child")
         #expect(TestElement.item.name == "item")
     }
 
     @Test
-    func test_uriPropertyAlwaysNil() {
-        #expect(TestElement.root.uri == nil)
-        #expect(TestElement.child.uri == nil)
-    }
-
-    @Test
-    func test_stringRepresentableFailableInitWithEmptyName() {
+    func test_stringRepresentableFailableInit_emptyName() {
         let elem = SRTestElement(name: "", uri: nil)
 
         #expect(elem == nil)
     }
 
     @Test
-    func test_stringRepresentableFailableInitWithNonNilURI() {
+    func test_stringRepresentableFailableInit_nonNilURI() {
         let elem = SRTestElement(name: "root", uri: "http://example.com")
 
         #expect(elem == nil)
     }
 
     @Test
-    func test_stringRepresentableFailableInitWithValidName() {
+    func test_stringRepresentableFailableInit_validName() {
         let elem = SRTestElement(name: "root", uri: nil)
 
         #expect(elem != nil)
@@ -108,23 +85,29 @@ extension XMLElementTests {
     }
 
     @Test
-    func test_stringRepresentableInitWithValidNameAndNilURI() {
+    func test_stringRepresentableInit_validNameAndNilURI() {
         let elem = SRTestElement("root", nil)
 
         #expect(elem.name == "root")
     }
 
     @Test
-    func test_stringRepresentableNameProperty() {
+    func test_stringRepresentableName() {
         let elem = SRTestElement("test", nil)
 
         #expect(elem.name == "test")
     }
 
     @Test
-    func test_stringRepresentableURIAlwaysNil() {
+    func test_stringRepresentableURI_alwaysNil() {
         let elem = SRTestElement("root", nil)
 
         #expect(elem.uri == nil)
+    }
+
+    @Test
+    func test_uri_alwaysNil() {
+        #expect(TestElement.root.uri == nil)
+        #expect(TestElement.child.uri == nil)
     }
 }

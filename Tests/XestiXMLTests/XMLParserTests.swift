@@ -4,44 +4,6 @@ import Foundation
 import Testing
 @testable import XestiXML
 
-private struct TestElement: XestiXML.XMLElement {
-    let name: String
-    let uri: String?
-
-    init(_ name: String,
-         _ uri: String?) {
-        precondition(!name.isEmpty)
-
-        self.name = name
-        self.uri = uri
-    }
-
-    init?(name: String,
-          uri: String?) {
-        guard !name.isEmpty,
-              ["child", "item", "name", "root", "value"].contains(name)
-        else { return nil }
-
-        self.name = name
-        self.uri = uri
-    }
-
-    static func == (lhs: Self,
-                    rhs: Self) -> Bool {
-        lhs.name == rhs.name
-    }
-
-    static let child = Self("child", nil)
-    static let item = Self("item", nil)
-    static let root = Self("root", nil)
-}
-
-private enum TestAttribute: String, XestiXML.XMLAttribute {
-    case id
-    case name
-    case type
-}
-
 struct XMLParserTests {
 }
 
@@ -49,17 +11,17 @@ struct XMLParserTests {
 
 extension XMLParserTests {
     @Test
-    func test_parseCDATAContent() throws {
+    func test_parse_cdataContent() throws {
         let data = Data("<root><![CDATA[hello <world>]]></root>".utf8)
-        let node = try XestiXML.XMLParser<TestElement, TestAttribute>().parse(data)
+        let node = try XestiXML.XMLParser<TestElementExt, TestAttribute>().parse(data)
 
         #expect(node.value == "hello <world>")
     }
 
     @Test
-    func test_parseElementWithAttributes() throws {
+    func test_parse_elementWithAttributes() throws {
         let data = Data("<root id=\"1\" name=\"test\"/>".utf8)
-        let node = try XestiXML.XMLParser<TestElement, TestAttribute>().parse(data)
+        let node = try XestiXML.XMLParser<TestElementExt, TestAttribute>().parse(data)
 
         #expect(node.element == .root)
         #expect(node.attributes?[.id] == "1")
@@ -67,35 +29,35 @@ extension XMLParserTests {
     }
 
     @Test
-    func test_parseElementsWithTextAndChildren() throws {
+    func test_parse_elementsWithTextAndChildren() throws {
         let data = Data("<root>text<child/>more</root>".utf8)
-        let node = try XestiXML.XMLParser<TestElement, TestAttribute>().parse(data)
+        let node = try XestiXML.XMLParser<TestElementExt, TestAttribute>().parse(data)
 
         #expect(node.children?.count == 3)
     }
 
     @Test
-    func test_parseInvalidXML() {
+    func test_parse_invalidXML() {
         let data = Data("not xml at all".utf8)
 
         #expect(throws: XMLError.self) {
-            try XestiXML.XMLParser<TestElement, TestAttribute>().parse(data)
+            try XestiXML.XMLParser<TestElementExt, TestAttribute>().parse(data)
         }
     }
 
     @Test
-    func test_parseMalformedXML() {
+    func test_parse_malformedXML() {
         let data = Data("<root><".utf8)
 
         #expect(throws: XMLError.self) {
-            try XestiXML.XMLParser<TestElement, TestAttribute>().parse(data)
+            try XestiXML.XMLParser<TestElementExt, TestAttribute>().parse(data)
         }
     }
 
     @Test
-    func test_parseMixedContent() throws {
+    func test_parse_mixedContent() throws {
         let data = Data("<root><child>text1</child><item>text2</item></root>".utf8)
-        let node = try XestiXML.XMLParser<TestElement, TestAttribute>().parse(data)
+        let node = try XestiXML.XMLParser<TestElementExt, TestAttribute>().parse(data)
 
         #expect(node.children?.count == 2)
         #expect(node.firstChildElement(.child)?.value == "text1")
@@ -103,17 +65,17 @@ extension XMLParserTests {
     }
 
     @Test
-    func test_parseMultipleSiblings() throws {
+    func test_parse_multipleSiblings() throws {
         let data = Data("<root><child/><child/><child/></root>".utf8)
-        let node = try XestiXML.XMLParser<TestElement, TestAttribute>().parse(data)
+        let node = try XestiXML.XMLParser<TestElementExt, TestAttribute>().parse(data)
 
         #expect(node.allChildElements(.child).count == 3)
     }
 
     @Test
-    func test_parseNestedElements() throws {
+    func test_parse_nestedElements() throws {
         let data = Data("<root><child><item/></child></root>".utf8)
-        let node = try XestiXML.XMLParser<TestElement, TestAttribute>().parse(data)
+        let node = try XestiXML.XMLParser<TestElementExt, TestAttribute>().parse(data)
 
         #expect(node.element == .root)
         #expect(node.children?.count == 1)
@@ -122,9 +84,9 @@ extension XMLParserTests {
     }
 
     @Test
-    func test_parseSimpleElement() throws {
+    func test_parse_simpleElement() throws {
         let data = Data("<root/>".utf8)
-        let node = try XestiXML.XMLParser<TestElement, TestAttribute>().parse(data)
+        let node = try XestiXML.XMLParser<TestElementExt, TestAttribute>().parse(data)
 
         #expect(node.element == .root)
         #expect(node.children?.isEmpty == true)
@@ -132,44 +94,44 @@ extension XMLParserTests {
     }
 
     @Test
-    func test_parseTextContent() throws {
+    func test_parse_textContent() throws {
         let data = Data("<root>hello world</root>".utf8)
-        let node = try XestiXML.XMLParser<TestElement, TestAttribute>().parse(data)
+        let node = try XestiXML.XMLParser<TestElementExt, TestAttribute>().parse(data)
 
         #expect(node.value == "hello world")
     }
 
     @Test
-    func test_parseUnrecognizedAttribute() {
+    func test_parse_unrecognizedAttribute() {
         let data = Data("<root unknown=\"value\"/>".utf8)
 
         #expect(throws: XMLError.self) {
-            try XestiXML.XMLParser<TestElement, TestAttribute>().parse(data)
+            try XestiXML.XMLParser<TestElementExt, TestAttribute>().parse(data)
         }
     }
 
     @Test
-    func test_parseUnrecognizedElement() {
+    func test_parse_unrecognizedElement() {
         let data = Data("<root><unknown/></root>".utf8)
 
         #expect(throws: XMLError.self) {
-            try XestiXML.XMLParser<TestElement, TestAttribute>().parse(data)
+            try XestiXML.XMLParser<TestElementExt, TestAttribute>().parse(data)
         }
     }
 
     @Test
-    func test_parseUnrecognizedRootElement() {
+    func test_parse_unrecognizedRootElement() {
         let data = Data("<unknown/>".utf8)
 
         #expect(throws: XMLError.self) {
-            try XestiXML.XMLParser<TestElement, TestAttribute>().parse(data)
+            try XestiXML.XMLParser<TestElementExt, TestAttribute>().parse(data)
         }
     }
 
     @Test
-    func test_parseWhitespaceTextNormalized() throws {
+    func test_parse_whitespaceTextNormalized() throws {
         let data = Data("<root>  hello  world  </root>".utf8)
-        let node = try XestiXML.XMLParser<TestElement, TestAttribute>().parse(data)
+        let node = try XestiXML.XMLParser<TestElementExt, TestAttribute>().parse(data)
 
         #expect(node.value == "hello world")
     }

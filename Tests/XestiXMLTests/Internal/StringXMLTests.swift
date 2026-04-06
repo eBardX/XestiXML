@@ -10,52 +10,52 @@ struct StringXMLTests {
 
 extension StringXMLTests {
     @Test
-    func test_normalizedXMLWhitespaceCollapsesTabs() {
+    func test_normalizedXMLWhitespace_collapsesTabs() {
         #expect("a\t\tb".normalizedXMLWhitespace() == "a b")
     }
 
     @Test
-    func test_normalizedXMLWhitespaceCollapsesWhitespace() {
+    func test_normalizedXMLWhitespace_collapsesWhitespace() {
         #expect("a   b".normalizedXMLWhitespace() == "a b")
     }
 
     @Test
-    func test_normalizedXMLWhitespaceEmptyString() {
+    func test_normalizedXMLWhitespace_emptyString() {
         #expect("".normalizedXMLWhitespace().isEmpty)
     }
 
     @Test
-    func test_normalizedXMLWhitespaceMixedWhitespace() {
+    func test_normalizedXMLWhitespace_mixedWhitespace() {
         #expect("  hello \t world \n ".normalizedXMLWhitespace() == "hello world")
     }
 
     @Test
-    func test_normalizedXMLWhitespaceNoWhitespace() {
+    func test_normalizedXMLWhitespace_noWhitespace() {
         #expect("hello".normalizedXMLWhitespace() == "hello")
     }
 
     @Test
-    func test_normalizedXMLWhitespaceOnlyWhitespace() {
+    func test_normalizedXMLWhitespace_onlyWhitespace() {
         #expect("   ".normalizedXMLWhitespace().isEmpty)
     }
 
     @Test
-    func test_normalizedXMLWhitespaceStripsLeading() {
+    func test_normalizedXMLWhitespace_stripsLeading() {
         #expect("  hello".normalizedXMLWhitespace() == "hello")
     }
 
     @Test
-    func test_normalizedXMLWhitespaceStripsTrailing() {
+    func test_normalizedXMLWhitespace_stripsTrailing() {
         #expect("hello  ".normalizedXMLWhitespace() == "hello")
     }
 
     @Test
-    func test_normalizedXMLWhitespaceWithCarriageReturns() {
+    func test_normalizedXMLWhitespace_withCarriageReturns() {
         #expect("a\r\rb".normalizedXMLWhitespace() == "a b")
     }
 
     @Test
-    func test_normalizedXMLWhitespaceWithNewlines() {
+    func test_normalizedXMLWhitespace_withNewlines() {
         #expect("a\n\nb".normalizedXMLWhitespace() == "a b")
     }
 }
