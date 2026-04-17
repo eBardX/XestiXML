@@ -6,10 +6,9 @@ public import XestiTools
 public protocol XMLAttribute: Equatable, Hashable, Sendable {
     /// Creates a new XML attribute with the provided name.
     ///
-    /// If the provided name is empty, this initializer stops program
-    /// execution.
-    ///
     /// - Parameter name:   The name of the XML attribute.
+    ///
+    /// - Precondition: The provided name must not be empty.
     init(_ name: String)
 
     /// Creates a new XML attribute with the provided name.

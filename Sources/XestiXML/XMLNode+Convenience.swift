@@ -8,6 +8,8 @@ extension XMLNode {
     /// ``XMLElement`` instance.
     ///
     /// - Parameter elem:   An ``XMLElement`` instance to match.
+    ///
+    /// - Throws:   `XMLError` if this instance is not a matching element node.
     public func expectElement(_ elem: E) throws {
         try expectElement([elem])
     }
@@ -16,6 +18,8 @@ extension XMLNode {
     /// ``XMLElement`` instances.
     ///
     /// - Parameter elems:  An array of ``XMLElement`` instances to match.
+    ///
+    /// - Throws:   `XMLError` if this instance is not a matching element node.
     public func expectElement(_ elems: [E]) throws {
         guard isElement(elems)
         else { throw XMLError.unexpectedElement(try _requireName(),
@@ -57,6 +61,8 @@ extension XMLNode {
     /// - Returns:  The first matching child element node as transformed by
     ///             `transform`. If this instance is not an element node, or if
     ///             there are no matches, this method returns `nil`.
+    ///
+    /// - Throws:   Any error thrown by `transform`.
     public func optionalChildElement<T>(_ elem: E,
                                         _ transform: (XMLNode<E, A>) throws -> T) throws -> T? {
         try optionalChildElement([elem], transform)
@@ -73,6 +79,8 @@ extension XMLNode {
     /// - Returns:  The first matching child element node as transformed by
     ///             `transform`. If this instance is not an element node, or if
     ///             there are no matches, this method returns `nil`.
+    ///
+    /// - Throws:   Any error thrown by `transform`.
     public func optionalChildElement<T>(_ elems: [E],
                                         _ transform: (XMLNode<E, A>) throws -> T) throws -> T? {
         guard let node = firstChildElement(elems)
@@ -92,6 +100,8 @@ extension XMLNode {
     /// - Returns:  An array of all matching child element nodes as transformed
     ///             by `transform`. If this instance is not an element node, or
     ///             if there are no matches, this method returns an empty array.
+    ///
+    /// - Throws:   Any error thrown by `transform`.
     public func optionalChildElements<T>(_ elem: E,
                                          _ transform: (XMLNode<E, A>) throws -> T) throws -> [T] {
         try optionalChildElements([elem], transform)
@@ -108,6 +118,8 @@ extension XMLNode {
     /// - Returns:  An array of all matching child element nodes as transformed
     ///             by `transform`. If this instance is not an element node, or
     ///             if there are no matches, this method returns an empty array.
+    ///
+    /// - Throws:   Any error thrown by `transform`.
     public func optionalChildElements<T>(_ elems: [E],
                                          _ transform: (XMLNode<E, A>) throws -> T) throws -> [T] {
         let nodes = allChildElements(elems)
@@ -127,8 +139,11 @@ extension XMLNode {
     ///                         the same or of a different type.
     ///
     /// - Returns:  The first matching child element node as transformed by
-    ///             `transform`. If this instance is not an element node, or if
-    ///             there are no matches, this method throws an error.
+    ///             `transform`.
+    ///
+    /// - Throws:   `XMLError.missingRequiredChildElement` if this instance is
+    ///             not an element node, or if there are no matches. Any error
+    ///             thrown by `transform`.
     public func requiredChildElement<T>(_ elem: E,
                                         _ transform: (XMLNode<E, A>) throws -> T) throws -> T {
         try requiredChildElement([elem], transform)
@@ -143,8 +158,11 @@ extension XMLNode {
     ///                         the same or of a different type.
     ///
     /// - Returns:  The first matching child element node as transformed by
-    ///             `transform`. If this instance is not an element node, or if
-    ///             there are no matches, this method throws an error.
+    ///             `transform`.
+    ///
+    /// - Throws:   `XMLError.missingRequiredChildElement` if this instance is
+    ///             not an element node, or if there are no matches. Any error
+    ///             thrown by `transform`.
     public func requiredChildElement<T>(_ elems: [E],
                                         _ transform: (XMLNode<E, A>) throws -> T) throws -> T {
         guard let node = firstChildElement(elems)
@@ -163,8 +181,11 @@ extension XMLNode {
     ///                         the same or of a different type.
     ///
     /// - Returns:  An array of all matching child element nodes as transformed
-    ///             by `transform`. If this instance is not an element node, or
-    ///             if there are no matches, this method throws an error.
+    ///             by `transform`.
+    ///
+    /// - Throws:   `XMLError.missingRequiredChildElement` if this instance is
+    ///             not an element node, or if there are no matches. Any error
+    ///             thrown by `transform`.
     public func requiredChildElements<T>(_ elem: E,
                                          _ transform: (XMLNode<E, A>) throws -> T) throws -> [T] {
         try requiredChildElements([elem], transform)
@@ -179,8 +200,11 @@ extension XMLNode {
     ///                         the same or of a different type.
     ///
     /// - Returns:  An array of all matching child element nodes as transformed
-    ///             by `transform`. If this instance is not an element node, or
-    ///             if there are no matches, this method throws an error.
+    ///             by `transform`.
+    ///
+    /// - Throws:   `XMLError.missingRequiredChildElement` if this instance is
+    ///             not an element node, or if there are no matches. Any error
+    ///             thrown by `transform`.
     public func requiredChildElements<T>(_ elems: [E],
                                          _ transform: (XMLNode<E, A>) throws -> T) throws -> [T] {
         let nodes = allChildElements(elems)
@@ -194,12 +218,16 @@ extension XMLNode {
 
     /// Convenience method that complains that this instance is an unexpected
     /// root element.
+    ///
+    /// - Throws:   `XMLError.unexpectedRootElement` always.
     public func unexpectedRootElement() throws {
         throw XMLError.unexpectedRootElement(try _requireName())
     }
 
     /// Convenience method that complains that this instance is an unsupported
     /// root element.
+    ///
+    /// - Throws:   `XMLError.unsupportedRootElement` always.
     public func unsupportedRootElement() throws {
         throw XMLError.unsupportedRootElement(try _requireName())
     }
@@ -217,9 +245,11 @@ extension XMLNode {
     ///
     /// - Returns:  The value of the first matching attribute node as
     ///             transformed by `validate`. If this instance is not an
-    ///             element node, or if there are no matches, or if the
-    ///             attribute value is invalid according to validation closure,
-    ///             this method returns `nil`.
+    ///             element node, or if there are no matches, this method
+    ///             returns `nil`.
+    ///
+    /// - Throws:   `XMLError.invalidAttributeValue` if the attribute value is
+    ///             invalid according to `validate`.
     public func valueOfOptionalAttribute<T>(_ attr: A,
                                             _ validate: (String) -> T? = { $0 }) throws -> T? {
         try valueOfOptionalAttribute([attr], validate)
@@ -238,9 +268,11 @@ extension XMLNode {
     ///
     /// - Returns:  The value of the first matching attribute node as
     ///             transformed by `validate`. If this instance is not an
-    ///             element node, or if there are no matches, or if the
-    ///             attribute value is invalid according to validation closure,
-    ///             this method returns `nil`.
+    ///             element node, or if there are no matches, this method
+    ///             returns `nil`.
+    ///
+    /// - Throws:   `XMLError.invalidAttributeValue` if the attribute value is
+    ///             invalid according to `validate`.
     public func valueOfOptionalAttribute<T>(_ attrs: [A],
                                             _ validate: (String) -> T? = { $0 }) throws -> T? {
         guard let attributes,
@@ -268,9 +300,11 @@ extension XMLNode {
     ///
     /// - Returns:  The ``value`` of the first matching child element node as
     ///             transformed by `validate`. If this instance is not an
-    ///             element node, or if there are no matches, or if the value is
-    ///             invalid according to validation closure, this method returns
-    ///             `nil`.
+    ///             element node, or if there are no matches, this method
+    ///             returns `nil`.
+    ///
+    /// - Throws:   `XMLError.invalidElementValue` if the element value is
+    ///             invalid according to `validate`.
     public func valueOfOptionalChildElement<T>(_ elem: E,
                                                _ validate: (String) -> T? = { $0 }) throws -> T? {
         try valueOfOptionalChildElement([elem], validate)
@@ -289,9 +323,11 @@ extension XMLNode {
     ///
     /// - Returns:  The ``value`` of the first matching child element node as
     ///             transformed by `validate`. If this instance is not an
-    ///             element node, or if there are no matches, or if the value is
-    ///             invalid according to validation closure, this method returns
-    ///             `nil`.
+    ///             element node, or if there are no matches, this method
+    ///             returns `nil`.
+    ///
+    /// - Throws:   `XMLError.invalidElementValue` if the element value is
+    ///             invalid according to `validate`.
     public func valueOfOptionalChildElement<T>(_ elems: [E],
                                                _ validate: (String) -> T? = { $0 }) throws -> T? {
         guard let node = firstChildElement(elems)
@@ -317,10 +353,12 @@ extension XMLNode {
     ///                         default, returns the value untransformed.
     ///
     /// - Returns:  The value of the first matching attribute node as
-    ///             transformed by `validate`. If this instance is not an
-    ///             element node, or if there are no matches, or if the
-    ///             attribute value is invalid according to validation closure,
-    ///             this method throws an error.
+    ///             transformed by `validate`.
+    ///
+    /// - Throws:   `XMLError.missingRequiredAttribute` if this instance is not
+    ///             an element node, or if there are no matches.
+    ///             `XMLError.invalidAttributeValue` if the attribute value is
+    ///             invalid according to `validate`.
     public func valueOfRequiredAttribute<T>(_ attr: A,
                                             _ validate: (String) -> T? = { $0 }) throws -> T {
         try valueOfRequiredAttribute([attr], validate)
@@ -338,10 +376,12 @@ extension XMLNode {
     ///                         default, returns the value untransformed.
     ///
     /// - Returns:  The value of the first matching attribute node as
-    ///             transformed by `validate`. If this instance is not an
-    ///             element node, or if there are no matches, or if the
-    ///             attribute value is invalid according to validation closure,
-    ///             this method throws an error.
+    ///             transformed by `validate`.
+    ///
+    /// - Throws:   `XMLError.missingRequiredAttribute` if this instance is not
+    ///             an element node, or if there are no matches.
+    ///             `XMLError.invalidAttributeValue` if the attribute value is
+    ///             invalid according to `validate`.
     public func valueOfRequiredAttribute<T>(_ attrs: [A],
                                             _ validate: (String) -> T? = { $0 }) throws -> T {
         guard let attributes,
@@ -368,10 +408,12 @@ extension XMLNode {
     ///                         default, returns the value untransformed.
     ///
     /// - Returns:  The ``value`` of the first matching child element node as
-    ///             transformed by `validate`. If this instance is not an
-    ///             element node, or if there are no matches, or if the value is
-    ///             invalid according to validation closure, this method throws
-    ///             an error.
+    ///             transformed by `validate`.
+    ///
+    /// - Throws:   `XMLError.missingRequiredChildElement` if this instance is
+    ///             not an element node, or if there are no matches.
+    ///             `XMLError.invalidElementValue` if the element value is
+    ///             invalid according to `validate`.
     public func valueOfRequiredChildElement<T>(_ elem: E,
                                                _ validate: (String) -> T? = { $0 }) throws -> T {
         try valueOfRequiredChildElement([elem], validate)
@@ -389,10 +431,12 @@ extension XMLNode {
     ///                         default, returns the value untransformed.
     ///
     /// - Returns:  The ``value`` of the first matching child element node as
-    ///             transformed by `validate`. If this instance is not an
-    ///             element node, or if there are no matches, or if the value is
-    ///             invalid according to validation closure, this method throws
-    ///             an error.
+    ///             transformed by `validate`.
+    ///
+    /// - Throws:   `XMLError.missingRequiredChildElement` if this instance is
+    ///             not an element node, or if there are no matches.
+    ///             `XMLError.invalidElementValue` if the element value is
+    ///             invalid according to `validate`.
     public func valueOfRequiredChildElement<T>(_ elems: [E],
                                                _ validate: (String) -> T? = { $0 }) throws -> T {
         guard let node = firstChildElement(elems)

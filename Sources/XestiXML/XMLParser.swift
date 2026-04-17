@@ -40,6 +40,8 @@ extension XMLParser {
     ///
     /// - Returns:  The ``XMLNode`` representing the root element of the parsed
     ///             XML document.
+    ///
+    /// - Throws:   `XMLError` if the XML document cannot be parsed.
     public func parse(_ data: Data) throws -> XMLNode<E, A> {
         let baseParser = BaseXMLParser(data: data)
         let delegate = Delegate()

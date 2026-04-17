@@ -1,5 +1,5 @@
 {
-  "originHash" : "20dd12f201a029e6f1613d701a42cc12bc8702650060dfc088a2da14bd09fa5e",
+  "originHash" : "b211e77fa0c218f9baef1fc7f8ba43612f68a7426bf573bd4e25edd2b36da6e9",
   "pins" : [
     {
       "identity" : "swift-argument-parser",
@@ -33,8 +33,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/eBardX/XestiText.git",
       "state" : {
-        "revision" : "33683d986df74f484f26098c108f157b7095c01c",
-        "version" : "4.0.1"
+        "revision" : "44f48ae8b0573a4880e772840a116592f6d4f3d0",
+        "version" : "4.0.3"
       }
     },
     {
@@ -42,8 +42,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/eBardX/XestiTools.git",
       "state" : {
-        "revision" : "1020d44acd708bef2f63a2e0455411febd1e2171",
-        "version" : "7.1.0"
+        "revision" : "615afab516ad9512da6e39cc39428e180c428c5a",
+        "version" : "7.2.1"
       }
     },
     {
