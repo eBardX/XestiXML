@@ -120,11 +120,46 @@ extension XMLParserTests {
     }
 
     @Test
+    func test_parse_simpleElement_rawRepresentable() throws {
+        let data = Data("<root/>".utf8)
+        let node = try XestiXML.XMLParser<TestElement, TestAttribute>().parse(data)
+
+        #expect(node.element == .root)
+    }
+
+    @Test
+    func test_parse_nestedElements_rawRepresentable() throws {
+        let data = Data("<root><child/></root>".utf8)
+        let node = try XestiXML.XMLParser<TestElement, TestAttribute>().parse(data)
+
+        #expect(node.element == .root)
+        #expect(node.children?.first?.element == .child)
+    }
+
+    @Test
     func test_parse_unrecognizedRootElement() {
         let data = Data("<unknown/>".utf8)
 
         #expect(throws: XMLError.self) {
             try XestiXML.XMLParser<TestElementExt, TestAttribute>().parse(data)
+        }
+    }
+
+    @Test
+    func test_parse_unrecognizedRootElement_reportsNilURIForNoNamespace() {
+        let data = Data("<unknown/>".utf8)
+        var capturedError: XMLError?
+
+        do {
+            _ = try XestiXML.XMLParser<TestElement, TestAttribute>().parse(data)
+        } catch let error as XMLError {
+            capturedError = error
+        } catch {}
+
+        if case let .unrecognizedElement(_, uri, _, _) = capturedError {
+            #expect(uri == nil)
+        } else {
+            Issue.record("Expected unrecognizedElement error")
         }
     }
 

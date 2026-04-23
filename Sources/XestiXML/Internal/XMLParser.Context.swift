@@ -58,9 +58,11 @@ extension XMLParser.Context {
 
     internal mutating func endElement(_ name: String,
                                       _ uri: String?) {
+        let normalizedURI = uri?.nilIfEmpty
+
         guard let elem = pendingElement,
               elem.name == name,
-              elem.uri == uri
+              elem.uri == normalizedURI
         else { return }
 
         flushText()
@@ -125,10 +127,12 @@ extension XMLParser.Context {
                                         _ attributes: [String: String]) {
         flushText()
 
+        let normalizedURI = uri?.nilIfEmpty
+
         guard let elem = E(name: name,
-                           uri: uri)
+                           uri: normalizedURI)
         else {
-            unrecognizedElement = (name, uri)
+            unrecognizedElement = (name, normalizedURI)
             shouldAbort = true
 
             return
