@@ -4,22 +4,6 @@
 
 import PackageDescription
 
-let package = Package(name: "XestiXML",
-                      platforms: [.iOS(.v16),
-                                  .macOS(.v14)],
-                      products: [.library(name: "XestiXML",
-                                          targets: ["XestiXML"])],
-                      dependencies: [.package(url: "https://github.com/swiftlang/swift-docc-plugin.git",
-                                              .upToNextMajor(from: "1.1.0")),
-                                     .package(url: "https://github.com/eBardX/XestiTools.git",
-                                              .upToNextMajor(from: "7.2.0"))],
-                      targets: [.target(name: "XestiXML",
-                                        dependencies: [.product(name: "XestiTools",
-                                                                package: "XestiTools")]),
-                                .testTarget(name: "XestiXMLTests",
-                                            dependencies: [.target(name: "XestiXML")])],
-                      swiftLanguageModes: [.v6])
-
 let swiftSettings: [SwiftSetting] = [.defaultIsolation(nil),
                                      .enableUpcomingFeature("ExistentialAny"),
                                      .enableUpcomingFeature("ImmutableWeakCaptures"),
@@ -28,10 +12,20 @@ let swiftSettings: [SwiftSetting] = [.defaultIsolation(nil),
                                      .enableUpcomingFeature("MemberImportVisibility"),
                                      .enableUpcomingFeature("NonisolatedNonsendingByDefault")]
 
-for target in package.targets {
-    var settings = target.swiftSettings ?? []
-
-    settings.append(contentsOf: swiftSettings)
-
-    target.swiftSettings = settings
-}
+let package = Package(name: "XestiXML",
+                      platforms: [.iOS(.v16),
+                                  .macOS(.v14)],
+                      products: [.library(name: "XestiXML",
+                                          targets: ["XestiXML"])],
+                      dependencies: [.package(url: "https://github.com/swiftlang/swift-docc-plugin.git",
+                                              .upToNextMajor(from: "1.5.0")),
+                                     .package(url: "https://github.com/eBardX/XestiTools.git",
+                                              .upToNextMajor(from: "7.3.0"))],
+                      targets: [.target(name: "XestiXML",
+                                        dependencies: [.product(name: "XestiTools",
+                                                                package: "XestiTools")],
+                                        swiftSettings: swiftSettings),
+                                .testTarget(name: "XestiXMLTests",
+                                            dependencies: [.target(name: "XestiXML")],
+                                            swiftSettings: swiftSettings)],
+                      swiftLanguageModes: [.v6])
