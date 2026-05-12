@@ -22,8 +22,8 @@ extension XMLNode {
     /// - Throws:   `XMLError` if this instance is not a matching element node.
     public func expectElement(_ elems: [E]) throws {
         guard isElement(elems)
-        else { throw XMLError.unexpectedElement(try _requireName(),
-                                                elems.map { $0.name }) }
+        else { throw try XMLError.unexpectedElement(_requireName(),
+                                                    elems.map { $0.name }) }
     }
 
     /// Returns a Boolean value indicating whether there is a child element node
@@ -166,8 +166,8 @@ extension XMLNode {
     public func requiredChildElement<T>(_ elems: [E],
                                         _ transform: (XMLNode<E, A>) throws -> T) throws -> T {
         guard let node = firstChildElement(elems)
-        else { throw XMLError.missingRequiredChildElement(try _requireName(),
-                                                          elems.map { $0.name }) }
+        else { throw try XMLError.missingRequiredChildElement(_requireName(),
+                                                              elems.map { $0.name }) }
 
         return try transform(node)
     }
@@ -210,8 +210,8 @@ extension XMLNode {
         let nodes = allChildElements(elems)
 
         guard !nodes.isEmpty
-        else { throw XMLError.missingRequiredChildElement(try _requireName(),
-                                                          elems.map { $0.name }) }
+        else { throw try XMLError.missingRequiredChildElement(_requireName(),
+                                                              elems.map { $0.name }) }
 
         return try nodes.map { try transform($0) }
     }
@@ -221,7 +221,7 @@ extension XMLNode {
     ///
     /// - Throws:   `XMLError.unexpectedRootElement` always.
     public func unexpectedRootElement() throws {
-        throw XMLError.unexpectedRootElement(try _requireName())
+        throw try XMLError.unexpectedRootElement(_requireName())
     }
 
     /// Convenience method that complains that this instance is an unsupported
@@ -229,7 +229,7 @@ extension XMLNode {
     ///
     /// - Throws:   `XMLError.unsupportedRootElement` always.
     public func unsupportedRootElement() throws {
-        throw XMLError.unsupportedRootElement(try _requireName())
+        throw try XMLError.unsupportedRootElement(_requireName())
     }
 
     /// Returns the transformed value of the first attribute node of this
@@ -386,7 +386,7 @@ extension XMLNode {
                                             _ validate: (String) -> T? = { $0 }) throws -> T {
         guard let attributes,
               let attrValue = _firstAttribute(attrs, attributes)
-        else { throw XMLError.missingRequiredAttribute(try _requireName(), attrs.map { $0.name }) }
+        else { throw try XMLError.missingRequiredAttribute(_requireName(), attrs.map { $0.name }) }
 
         let (value, strValue, isValid) = _validateValue(attrValue, validate)
 
@@ -440,7 +440,7 @@ extension XMLNode {
     public func valueOfRequiredChildElement<T>(_ elems: [E],
                                                _ validate: (String) -> T? = { $0 }) throws -> T {
         guard let node = firstChildElement(elems)
-        else { throw XMLError.missingRequiredChildElement(try _requireName(), elems.map { $0.name }) }
+        else { throw try XMLError.missingRequiredChildElement(_requireName(), elems.map { $0.name }) }
 
         let (value, strValue, isValid) = _validateValue(node.value, validate)
 

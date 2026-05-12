@@ -218,10 +218,10 @@ extension XMLNode {
     public func isElement(_ elems: [E]) -> Bool {
         switch content {
         case let .elem(candElem, _, _):
-            return elems.contains(candElem)
+            elems.contains(candElem)
 
         default:
-            return false
+            false
         }
     }
 

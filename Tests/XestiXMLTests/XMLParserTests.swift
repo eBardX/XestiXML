@@ -154,7 +154,8 @@ extension XMLParserTests {
             _ = try XestiXML.XMLParser<TestElement, TestAttribute>().parse(data)
         } catch let error as XMLError {
             capturedError = error
-        } catch {}
+        } catch {
+        }
 
         if case let .unrecognizedElement(_, uri, _, _) = capturedError {
             #expect(uri == nil)

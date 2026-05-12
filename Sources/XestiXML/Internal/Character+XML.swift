@@ -8,7 +8,10 @@ extension Character {
     //
     internal var isXMLWhitespace: Bool {
         switch self {
-        case "\n", "\r", "\t", " ":
+        case " ",
+             "\n",
+             "\r",
+             "\t":
             true
 
         default:
