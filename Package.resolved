@@ -1,40 +1,13 @@
 {
-  "originHash" : "c758f61c72cc43a6b39b9cfd5e46de6bf52d69b64f13972eb0a724463f73c1a2",
+  "originHash" : "d28ca93ce5ca5beda6b47824a69da1509b79bf3c1af39c3beb785881dc9d366a",
   "pins" : [
-    {
-      "identity" : "swift-argument-parser",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-argument-parser.git",
-      "state" : {
-        "revision" : "626b5b7b2f45e1b0b1c6f4a309296d1d21d7311b",
-        "version" : "1.7.1"
-      }
-    },
-    {
-      "identity" : "xestitext",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/eBardX/XestiText.git",
-      "state" : {
-        "revision" : "44f48ae8b0573a4880e772840a116592f6d4f3d0",
-        "version" : "4.0.3"
-      }
-    },
     {
       "identity" : "xestitools",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/eBardX/XestiTools.git",
       "state" : {
-        "revision" : "1c619962cf024f994be792ca81d5e0f947c29039",
-        "version" : "7.4.0"
-      }
-    },
-    {
-      "identity" : "zipfoundation",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/weichsel/ZIPFoundation.git",
-      "state" : {
-        "revision" : "22787ffb59de99e5dc1fbfe80b19c97a904ad48d",
-        "version" : "0.9.20"
+        "revision" : "862a2b5d4b5c24147822bbd535dd2f1691fdbfa2",
+        "version" : "9.0.0"
       }
     }
   ],
