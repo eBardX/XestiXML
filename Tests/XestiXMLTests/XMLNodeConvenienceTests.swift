@@ -10,7 +10,7 @@ struct XMLNodeConvenienceTests {
 
 extension XMLNodeConvenienceTests {
     @Test
-    func test_expectElement_matching() throws {
+    func expectElement_matching() throws {
         let node = XMLNode<TestElement, TestAttribute>(element: .root,
                                                        attributes: [:],
                                                        children: [])
@@ -19,7 +19,7 @@ extension XMLNodeConvenienceTests {
     }
 
     @Test
-    func test_expectElement_notMatching() {
+    func expectElement_notMatching() {
         let node = XMLNode<TestElement, TestAttribute>(element: .root,
                                                        attributes: [:],
                                                        children: [])
@@ -30,7 +30,7 @@ extension XMLNodeConvenienceTests {
     }
 
     @Test
-    func test_hasChildElement_false() {
+    func hasChildElement_false() {
         let child = XMLNode<TestElement, TestAttribute>(element: .child,
                                                         attributes: [:],
                                                         children: [])
@@ -42,7 +42,7 @@ extension XMLNodeConvenienceTests {
     }
 
     @Test
-    func test_hasChildElement_true() {
+    func hasChildElement_true() {
         let child = XMLNode<TestElement, TestAttribute>(element: .child,
                                                         attributes: [:],
                                                         children: [])
@@ -54,7 +54,7 @@ extension XMLNodeConvenienceTests {
     }
 
     @Test
-    func test_hasChildElement_withArray() {
+    func hasChildElement_withArray() {
         let child = XMLNode<TestElement, TestAttribute>(element: .child,
                                                         attributes: [:],
                                                         children: [])
@@ -66,7 +66,7 @@ extension XMLNodeConvenienceTests {
     }
 
     @Test
-    func test_optionalChildElement_found() throws {
+    func optionalChildElement_found() throws {
         let childText = XMLNode<TestElement, TestAttribute>(text: "hello")
         let child = XMLNode(element: .child,
                             attributes: [:],
@@ -80,7 +80,7 @@ extension XMLNodeConvenienceTests {
     }
 
     @Test
-    func test_optionalChildElement_notFound() throws {
+    func optionalChildElement_notFound() throws {
         let node = XMLNode<TestElement, TestAttribute>(element: .root,
                                                        attributes: [:],
                                                        children: [])
@@ -90,7 +90,7 @@ extension XMLNodeConvenienceTests {
     }
 
     @Test
-    func test_optionalChildElements_found() throws {
+    func optionalChildElements_found() throws {
         let child1 = XMLNode<TestElement, TestAttribute>(element: .child,
                                                          attributes: [.id: "1"],
                                                          children: [])
@@ -107,7 +107,7 @@ extension XMLNodeConvenienceTests {
     }
 
     @Test
-    func test_optionalChildElements_notFound() throws {
+    func optionalChildElements_notFound() throws {
         let node = XMLNode<TestElement, TestAttribute>(element: .root,
                                                        attributes: [:],
                                                        children: [])
@@ -117,7 +117,7 @@ extension XMLNodeConvenienceTests {
     }
 
     @Test
-    func test_requiredChildElement_found() throws {
+    func requiredChildElement_found() throws {
         let childText = XMLNode<TestElement, TestAttribute>(text: "hello")
         let child = XMLNode(element: .child,
                             attributes: [:],
@@ -131,7 +131,7 @@ extension XMLNodeConvenienceTests {
     }
 
     @Test
-    func test_requiredChildElement_notFound() {
+    func requiredChildElement_notFound() {
         let node = XMLNode<TestElement, TestAttribute>(element: .root,
                                                        attributes: [:],
                                                        children: [])
@@ -142,7 +142,7 @@ extension XMLNodeConvenienceTests {
     }
 
     @Test
-    func test_requiredChildElements_found() throws {
+    func requiredChildElements_found() throws {
         let child1 = XMLNode<TestElement, TestAttribute>(element: .child,
                                                          attributes: [.id: "1"],
                                                          children: [])
@@ -159,7 +159,7 @@ extension XMLNodeConvenienceTests {
     }
 
     @Test
-    func test_requiredChildElements_notFound() {
+    func requiredChildElements_notFound() {
         let node = XMLNode<TestElement, TestAttribute>(element: .root,
                                                        attributes: [:],
                                                        children: [])
@@ -170,7 +170,29 @@ extension XMLNodeConvenienceTests {
     }
 
     @Test
-    func test_unexpectedRootElement() {
+    func unexpectedElement() {
+        let node = XMLNode<TestElement, TestAttribute>(element: .root,
+                                                       attributes: [:],
+                                                       children: [])
+
+        #expect(throws: XMLError.self) {
+            try node.unexpectedElement(.child)
+        }
+    }
+
+    @Test
+    func unexpectedElement_withArray() {
+        let node = XMLNode<TestElement, TestAttribute>(element: .root,
+                                                       attributes: [:],
+                                                       children: [])
+
+        #expect(throws: XMLError.self) {
+            try node.unexpectedElement([.child, .item])
+        }
+    }
+
+    @Test
+    func unexpectedRootElement() {
         let node = XMLNode<TestElement, TestAttribute>(element: .root,
                                                        attributes: [:],
                                                        children: [])
@@ -181,7 +203,7 @@ extension XMLNodeConvenienceTests {
     }
 
     @Test
-    func test_unsupportedRootElement() {
+    func unsupportedRootElement() {
         let node = XMLNode<TestElement, TestAttribute>(element: .root,
                                                        attributes: [:],
                                                        children: [])
@@ -192,7 +214,7 @@ extension XMLNodeConvenienceTests {
     }
 
     @Test
-    func test_valueOfOptionalAttribute_found() throws {
+    func valueOfOptionalAttribute_found() throws {
         let node = XMLNode<TestElement, TestAttribute>(element: .root,
                                                        attributes: [.id: "123"],
                                                        children: [])
@@ -202,7 +224,7 @@ extension XMLNodeConvenienceTests {
     }
 
     @Test
-    func test_valueOfOptionalAttribute_invalid() {
+    func valueOfOptionalAttribute_invalid() {
         let node = XMLNode<TestElement, TestAttribute>(element: .root,
                                                        attributes: [.id: "abc"],
                                                        children: [])
@@ -213,7 +235,7 @@ extension XMLNodeConvenienceTests {
     }
 
     @Test
-    func test_valueOfOptionalAttribute_normalizesWhitespace() throws {
+    func valueOfOptionalAttribute_normalizesWhitespace() throws {
         let node = XMLNode<TestElement, TestAttribute>(element: .root,
                                                        attributes: [.id: "  hello  "],
                                                        children: [])
@@ -223,7 +245,7 @@ extension XMLNodeConvenienceTests {
     }
 
     @Test
-    func test_valueOfOptionalAttribute_notFound() throws {
+    func valueOfOptionalAttribute_notFound() throws {
         let node = XMLNode<TestElement, TestAttribute>(element: .root,
                                                        attributes: [:],
                                                        children: [])
@@ -233,7 +255,7 @@ extension XMLNodeConvenienceTests {
     }
 
     @Test
-    func test_valueOfOptionalChildElement_found() throws {
+    func valueOfOptionalChildElement_found() throws {
         let childText = XMLNode<TestElement, TestAttribute>(text: "42")
         let child = XMLNode(element: .child,
                             attributes: [:],
@@ -247,7 +269,7 @@ extension XMLNodeConvenienceTests {
     }
 
     @Test
-    func test_valueOfOptionalChildElement_invalid() {
+    func valueOfOptionalChildElement_invalid() {
         let childText = XMLNode<TestElement, TestAttribute>(text: "abc")
         let child = XMLNode(element: .child,
                             attributes: [:],
@@ -262,7 +284,7 @@ extension XMLNodeConvenienceTests {
     }
 
     @Test
-    func test_valueOfOptionalChildElement_notFound() throws {
+    func valueOfOptionalChildElement_notFound() throws {
         let node = XMLNode<TestElement, TestAttribute>(element: .root,
                                                        attributes: [:],
                                                        children: [])
@@ -272,7 +294,7 @@ extension XMLNodeConvenienceTests {
     }
 
     @Test
-    func test_valueOfRequiredAttribute_found() throws {
+    func valueOfRequiredAttribute_found() throws {
         let node = XMLNode<TestElement, TestAttribute>(element: .root,
                                                        attributes: [.id: "123"],
                                                        children: [])
@@ -282,7 +304,7 @@ extension XMLNodeConvenienceTests {
     }
 
     @Test
-    func test_valueOfRequiredAttribute_invalid() {
+    func valueOfRequiredAttribute_invalid() {
         let node = XMLNode<TestElement, TestAttribute>(element: .root,
                                                        attributes: [.id: "abc"],
                                                        children: [])
@@ -293,7 +315,7 @@ extension XMLNodeConvenienceTests {
     }
 
     @Test
-    func test_valueOfRequiredAttribute_notFound() {
+    func valueOfRequiredAttribute_notFound() {
         let node = XMLNode<TestElement, TestAttribute>(element: .root,
                                                        attributes: [:],
                                                        children: [])
@@ -304,7 +326,7 @@ extension XMLNodeConvenienceTests {
     }
 
     @Test
-    func test_valueOfRequiredChildElement_found() throws {
+    func valueOfRequiredChildElement_found() throws {
         let childText = XMLNode<TestElement, TestAttribute>(text: "42")
         let child = XMLNode(element: .child,
                             attributes: [:],
@@ -318,7 +340,7 @@ extension XMLNodeConvenienceTests {
     }
 
     @Test
-    func test_valueOfRequiredChildElement_invalid() {
+    func valueOfRequiredChildElement_invalid() {
         let childText = XMLNode<TestElement, TestAttribute>(text: "abc")
         let child = XMLNode(element: .child,
                             attributes: [:],
@@ -333,7 +355,7 @@ extension XMLNodeConvenienceTests {
     }
 
     @Test
-    func test_valueOfRequiredChildElement_notFound() {
+    func valueOfRequiredChildElement_notFound() {
         let node = XMLNode<TestElement, TestAttribute>(element: .root,
                                                        attributes: [:],
                                                        children: [])

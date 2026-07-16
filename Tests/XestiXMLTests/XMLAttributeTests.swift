@@ -11,7 +11,7 @@ struct XMLAttributeTests {
 
 extension XMLAttributeTests {
     @Test
-    func test_equality_differentValues() {
+    func equality_differentValues() {
         let attr1 = TestAttribute.id
         let attr2 = TestAttribute.name
 
@@ -19,7 +19,7 @@ extension XMLAttributeTests {
     }
 
     @Test
-    func test_equality_sameValues() {
+    func equality_sameValues() {
         let attr1 = TestAttribute.id
         let attr2 = TestAttribute.id
 
@@ -27,14 +27,14 @@ extension XMLAttributeTests {
     }
 
     @Test
-    func test_failableInit_invalidName() {
+    func failableInit_invalidName() {
         let attr = TestAttribute(name: "nonexistent")
 
         #expect(attr == nil)
     }
 
     @Test
-    func test_failableInit_validName() {
+    func failableInit_validName() {
         let attr = TestAttribute(name: "id")
 
         #expect(attr != nil)
@@ -42,7 +42,7 @@ extension XMLAttributeTests {
     }
 
     @Test
-    func test_hashable() {
+    func hashable() {
         let attr1 = TestAttribute.id
         let attr2 = TestAttribute.id
         let attr3 = TestAttribute.name
@@ -57,28 +57,28 @@ extension XMLAttributeTests {
     }
 
     @Test
-    func test_init_validName() {
+    func init_validName() {
         let attr = TestAttribute("id")
 
         #expect(attr.name == "id")
     }
 
     @Test
-    func test_name() {
+    func name() {
         #expect(TestAttribute.id.name == "id")
         #expect(TestAttribute.name.name == "name")
         #expect(TestAttribute.value.name == "value")
     }
 
     @Test
-    func test_stringRepresentableFailableInit_emptyName() {
+    func stringRepresentableFailableInit_emptyName() {
         let attr = SRTestAttribute(name: "")
 
         #expect(attr == nil)
     }
 
     @Test
-    func test_stringRepresentableFailableInit_validName() {
+    func stringRepresentableFailableInit_validName() {
         let attr = SRTestAttribute(name: "id")
 
         #expect(attr != nil)
@@ -86,14 +86,14 @@ extension XMLAttributeTests {
     }
 
     @Test
-    func test_stringRepresentableInit_validName() {
+    func stringRepresentableInit_validName() {
         let attr = SRTestAttribute("id")
 
         #expect(attr.name == "id")
     }
 
     @Test
-    func test_stringRepresentableName() {
+    func stringRepresentableName() {
         let attr = SRTestAttribute("test")
 
         #expect(attr.name == "test")

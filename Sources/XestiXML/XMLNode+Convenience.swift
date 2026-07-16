@@ -216,19 +216,42 @@ extension XMLNode {
         return try nodes.map { try transform($0) }
     }
 
-    /// Convenience method that complains that this instance is an unexpected
+    /// Throws an error indicating that this instance is an unexpected
+    /// element, given the provided ``XMLElement`` instance that was expected.
+    ///
+    /// - Parameter elem:   The ``XMLElement`` instance that was expected.
+    ///
+    /// - Throws:   `XMLError.unexpectedElement` always.
+    public func unexpectedElement(_ elem: E) throws -> Never {
+        try unexpectedElement([elem])
+    }
+
+    /// Throws an error indicating that this instance is an unexpected
+    /// element, given the provided ``XMLElement`` instances that were
+    /// expected.
+    ///
+    /// - Parameter elems:  An array of ``XMLElement`` instances that were
+    ///                     expected.
+    ///
+    /// - Throws:   `XMLError.unexpectedElement` always.
+    public func unexpectedElement(_ elems: [E]) throws -> Never {
+        throw try XMLError.unexpectedElement(_requireName(),
+                                             elems.map { $0.name })
+    }
+
+    /// Throws an error indicating that this instance is an unexpected
     /// root element.
     ///
     /// - Throws:   `XMLError.unexpectedRootElement` always.
-    public func unexpectedRootElement() throws {
+    public func unexpectedRootElement() throws -> Never {
         throw try XMLError.unexpectedRootElement(_requireName())
     }
 
-    /// Convenience method that complains that this instance is an unsupported
+    /// Throws an error indicating that this instance is an unsupported
     /// root element.
     ///
     /// - Throws:   `XMLError.unsupportedRootElement` always.
-    public func unsupportedRootElement() throws {
+    public func unsupportedRootElement() throws -> Never {
         throw try XMLError.unsupportedRootElement(_requireName())
     }
 

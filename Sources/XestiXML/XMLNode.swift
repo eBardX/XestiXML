@@ -13,7 +13,7 @@
 ///      value is the attribute (string) value. This dictionary may be empty.
 ///   3. An array of child `XMLNode` instances. This array may be empty.
 ///
-/// - A text node consists of string value.
+/// - A text node consists of a string value.
 public struct XMLNode<E: XMLElement, A: XMLAttribute> {
 
     // MARK: Public Initializers

@@ -10,52 +10,52 @@ struct StringXMLTests {
 
 extension StringXMLTests {
     @Test
-    func test_normalizedXMLWhitespace_collapsesTabs() {
+    func normalizedXMLWhitespace_collapsesTabs() {
         #expect("a\t\tb".normalizedXMLWhitespace() == "a b")
     }
 
     @Test
-    func test_normalizedXMLWhitespace_collapsesWhitespace() {
+    func normalizedXMLWhitespace_collapsesWhitespace() {
         #expect("a   b".normalizedXMLWhitespace() == "a b")
     }
 
     @Test
-    func test_normalizedXMLWhitespace_emptyString() {
+    func normalizedXMLWhitespace_emptyString() {
         #expect("".normalizedXMLWhitespace().isEmpty)
     }
 
     @Test
-    func test_normalizedXMLWhitespace_mixedWhitespace() {
+    func normalizedXMLWhitespace_mixedWhitespace() {
         #expect("  hello \t world \n ".normalizedXMLWhitespace() == "hello world")
     }
 
     @Test
-    func test_normalizedXMLWhitespace_noWhitespace() {
+    func normalizedXMLWhitespace_noWhitespace() {
         #expect("hello".normalizedXMLWhitespace() == "hello")
     }
 
     @Test
-    func test_normalizedXMLWhitespace_onlyWhitespace() {
+    func normalizedXMLWhitespace_onlyWhitespace() {
         #expect("   ".normalizedXMLWhitespace().isEmpty)
     }
 
     @Test
-    func test_normalizedXMLWhitespace_stripsLeading() {
+    func normalizedXMLWhitespace_stripsLeading() {
         #expect("  hello".normalizedXMLWhitespace() == "hello")
     }
 
     @Test
-    func test_normalizedXMLWhitespace_stripsTrailing() {
+    func normalizedXMLWhitespace_stripsTrailing() {
         #expect("hello  ".normalizedXMLWhitespace() == "hello")
     }
 
     @Test
-    func test_normalizedXMLWhitespace_withCarriageReturns() {
+    func normalizedXMLWhitespace_withCarriageReturns() {
         #expect("a\r\rb".normalizedXMLWhitespace() == "a b")
     }
 
     @Test
-    func test_normalizedXMLWhitespace_withNewlines() {
+    func normalizedXMLWhitespace_withNewlines() {
         #expect("a\n\nb".normalizedXMLWhitespace() == "a b")
     }
 }

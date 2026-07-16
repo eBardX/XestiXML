@@ -11,14 +11,14 @@ struct XMLErrorTests {
 
 extension XMLErrorTests {
     @Test
-    func test_cause_nonParseFailure() {
+    func cause_nonParseFailure() {
         let error = XMLError.internalFailure
 
         #expect(error.cause == nil)
     }
 
     @Test
-    func test_cause_parseFailureWithError() {
+    func cause_parseFailureWithError() {
         let cause = XMLError.internalFailure
         let error = XMLError.parseFailure(cause, 1, 1)
 
@@ -26,42 +26,42 @@ extension XMLErrorTests {
     }
 
     @Test
-    func test_cause_parseFailureWithoutError() {
+    func cause_parseFailureWithoutError() {
         let error = XMLError.parseFailure(nil, 1, 1)
 
         #expect(error.cause == nil)
     }
 
     @Test
-    func test_message_formatListEmptyNames() {
+    func message_formatListEmptyNames() {
         let error = XMLError.invalidAttributeValue([], "val")
 
         #expect(error.message.contains("(unknown)"))
     }
 
     @Test
-    func test_message_formatListThreeNames() {
+    func message_formatListThreeNames() {
         let error = XMLError.invalidAttributeValue(["a", "b", "c"], "val")
 
         #expect(error.message.contains("a, b, or c"))
     }
 
     @Test
-    func test_message_formatListTwoNames() {
+    func message_formatListTwoNames() {
         let error = XMLError.invalidAttributeValue(["a", "b"], "val")
 
         #expect(error.message.contains("a or b"))
     }
 
     @Test
-    func test_message_internalFailure() {
+    func message_internalFailure() {
         let error = XMLError.internalFailure
 
         #expect(error.message == "Internal failure")
     }
 
     @Test
-    func test_message_invalidAttributeValue() {
+    func message_invalidAttributeValue() {
         let error = XMLError.invalidAttributeValue(["attr1"], "bad")
 
         #expect(error.message.contains("attr1"))
@@ -69,7 +69,7 @@ extension XMLErrorTests {
     }
 
     @Test
-    func test_message_invalidElementValue() {
+    func message_invalidElementValue() {
         let error = XMLError.invalidElementValue(["elem"], "bad")
 
         #expect(error.message.contains("<elem>"))
@@ -77,7 +77,7 @@ extension XMLErrorTests {
     }
 
     @Test
-    func test_message_missingRequiredAttribute() {
+    func message_missingRequiredAttribute() {
         let error = XMLError.missingRequiredAttribute("parent", ["attr"])
 
         #expect(error.message.contains("attr"))
@@ -85,7 +85,7 @@ extension XMLErrorTests {
     }
 
     @Test
-    func test_message_missingRequiredChildElement() {
+    func message_missingRequiredChildElement() {
         let error = XMLError.missingRequiredChildElement("parent", ["child"])
 
         #expect(error.message.contains("<child>"))
@@ -93,7 +93,7 @@ extension XMLErrorTests {
     }
 
     @Test
-    func test_message_parseFailure() {
+    func message_parseFailure() {
         let error = XMLError.parseFailure(nil, 5, 10)
 
         #expect(error.message.contains("5"))
@@ -101,7 +101,7 @@ extension XMLErrorTests {
     }
 
     @Test
-    func test_message_unexpectedElement() {
+    func message_unexpectedElement() {
         let error = XMLError.unexpectedElement("actual", ["expected1", "expected2"])
 
         #expect(error.message.contains("<actual>"))
@@ -110,14 +110,14 @@ extension XMLErrorTests {
     }
 
     @Test
-    func test_message_unexpectedRootElement() {
+    func message_unexpectedRootElement() {
         let error = XMLError.unexpectedRootElement("root")
 
         #expect(error.message.contains("<root>"))
     }
 
     @Test
-    func test_message_unrecognizedAttribute() {
+    func message_unrecognizedAttribute() {
         let error = XMLError.unrecognizedAttribute("attr", 3, 7)
 
         #expect(error.message.contains("attr"))
@@ -126,7 +126,7 @@ extension XMLErrorTests {
     }
 
     @Test
-    func test_message_unrecognizedElementWithURI() {
+    func message_unrecognizedElementWithURI() {
         let error = XMLError.unrecognizedElement("elem", "http://example.com", 1, 2)
 
         #expect(error.message.contains("elem"))
@@ -134,14 +134,14 @@ extension XMLErrorTests {
     }
 
     @Test
-    func test_message_unrecognizedElementWithoutURI() {
+    func message_unrecognizedElementWithoutURI() {
         let error = XMLError.unrecognizedElement("elem", nil, 1, 2)
 
         #expect(error.message.contains("elem"))
     }
 
     @Test
-    func test_message_unsupportedRootElement() {
+    func message_unsupportedRootElement() {
         let error = XMLError.unsupportedRootElement("root")
 
         #expect(error.message.contains("<root>"))
