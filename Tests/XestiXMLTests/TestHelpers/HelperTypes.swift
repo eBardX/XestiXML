@@ -3,6 +3,19 @@
 import XestiTools
 @testable import XestiXML
 
+typealias SRTestFormatter = XMLFormatter<SRTestElement, SRTestAttribute>
+typealias SRTestNode      = XMLNode<SRTestElement, SRTestAttribute>
+typealias Test2Document   = XMLDocument<Test2Element, TestAttribute>
+typealias Test2Formatter  = XMLFormatter<Test2Element, TestAttribute>
+typealias Test2Node       = XMLNode<Test2Element, TestAttribute>
+typealias Test2Parser     = XMLParser<Test2Element, TestAttribute>
+typealias Test3Formatter  = XMLFormatter<Test2Element, Test3Attribute>
+typealias Test3Node       = XMLNode<Test2Element, Test3Attribute>
+typealias Test3Parser     = XMLParser<Test2Element, Test3Attribute>
+typealias TestFormatter   = XMLFormatter<TestElement, TestAttribute>
+typealias TestNode        = XMLNode<TestElement, TestAttribute>
+typealias TestParser      = XMLParser<TestElement, TestAttribute>
+
 struct SRTestAttribute: XMLAttribute, StringRepresentable {
     let stringValue: String
 
@@ -38,7 +51,31 @@ enum TestElement: String, XMLElement {
     case root
 }
 
-struct TestElementExt: XestiXML.XMLElement {
+//  Accepts any non-empty attribute name, including qualified names such as
+//  `a:id`.
+struct Test3Attribute: XestiXML.XMLAttribute {
+    let name: String
+    let uri: String?
+
+    init(_ name: String,
+         _ uri: String?) {
+        precondition(!name.isEmpty)
+
+        self.name = name
+        self.uri = uri
+    }
+
+    init?(name: String,
+          uri: String?) {
+        guard !name.isEmpty
+        else { return nil }
+
+        self.name = name
+        self.uri = uri
+    }
+}
+
+struct Test2Element: XestiXML.XMLElement {
     let name: String
     let uri: String?
 
